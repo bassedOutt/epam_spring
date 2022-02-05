@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CrudService<T extends EntityDto> {
     List<T> getAll();
-    T get(Long id);
+    T getById(Long id);
     void insert(T entity);
     void update(T entity);
     void delete(T entity);

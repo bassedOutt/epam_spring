@@ -11,4 +11,12 @@ public class TicketDto implements EntityDto{
     private double price;
     private SessionDto Session;
     private SeatDto seat;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

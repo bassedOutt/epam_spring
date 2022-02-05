@@ -13,4 +13,12 @@ public class SeatDto implements EntityDto{
     private boolean isTaken;
     private SessionDto session;
     private MovieDto movie;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

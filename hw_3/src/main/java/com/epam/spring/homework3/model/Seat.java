@@ -13,4 +13,12 @@ public class Seat implements Entity {
     private boolean isTaken;
     private Session session;
     private Movie movie;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

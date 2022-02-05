@@ -6,9 +6,8 @@ import java.util.List;
 
 public interface CrudRepository<T extends Entity> {
     List<T> getAll();
-    T get(Long id);
+    T getById(Long id);
     void insert(T entity);
     void update(T entity);
     void delete(T entity);
-
 }

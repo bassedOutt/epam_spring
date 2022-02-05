@@ -21,4 +21,12 @@ public class Session implements Entity{
     public long getFreeSeats() {
         return seats.stream().filter(seat -> !seat.isTaken()).count();
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 }
