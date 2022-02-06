@@ -6,6 +6,7 @@ import com.epam.spring.homework3.repository.CrudRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public abstract class CrudRepositoryImpl<T extends Entity> implements CrudRepository<T> {
 
@@ -17,7 +18,7 @@ public abstract class CrudRepositoryImpl<T extends Entity> implements CrudReposi
     }
 
     @Override
-    public T getById(Long id) {
+    public T getById(String id) {
         return entities.stream()
                 .filter(entity -> entity.getId().equals(id))
                 .findFirst()
@@ -26,6 +27,7 @@ public abstract class CrudRepositoryImpl<T extends Entity> implements CrudReposi
 
     @Override
     public void insert(T entity) {
+        entity.setId(UUID.randomUUID().toString());
         entities.add(entity);
     }
 
@@ -35,11 +37,18 @@ public abstract class CrudRepositoryImpl<T extends Entity> implements CrudReposi
     }
 
     @Override
-    public void update(T entity){
-        int index = Math.toIntExact(entities.stream()
-                .filter(listEntity -> entity.getId().equals(listEntity.getId()))
-                .findFirst()
-                .orElseThrow(() -> new DataAccessException("entity not found")).getId());
-        entities.set(index,entity);
+    public void update(T entity) {
+        int index = getIndexById(entity.getId());
+        if (index == -1) throw new DataAccessException("No entity with id " + entity.getId() + " in the database");
+        entities.set(index, entity);
+    }
+
+    private int getIndexById(String id) {
+        for (int i = 0; i < entities.size(); i++) {
+            if (entities.get(i) != null && entities.get(i).getId().equals(id)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }

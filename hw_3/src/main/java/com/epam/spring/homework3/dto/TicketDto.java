@@ -6,17 +6,9 @@ import lombok.Data;
 @Data
 @Builder
 public class TicketDto implements EntityDto{
-    private Long id;
+    private String id;
     private UserDto user;
     private double price;
     private SessionDto Session;
     private SeatDto seat;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

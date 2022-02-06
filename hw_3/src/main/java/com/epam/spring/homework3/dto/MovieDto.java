@@ -9,7 +9,7 @@ import java.sql.Date;
 @Builder
 public class MovieDto implements EntityDto{
 
-    private Long id;
+    private String id;
     private int duration;
     private String imageUrl;
     private int price;
@@ -18,11 +18,4 @@ public class MovieDto implements EntityDto{
     private String description;
     private String language;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

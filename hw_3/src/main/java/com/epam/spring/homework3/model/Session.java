@@ -10,7 +10,7 @@ import java.util.List;
 @Data
 @Builder
 public class Session implements Entity{
-    private Long id;
+    private String id;
     private Movie movie;
     private Time startTime;
     private Time endTime;
@@ -20,13 +20,5 @@ public class Session implements Entity{
 
     public long getFreeSeats() {
         return seats.stream().filter(seat -> !seat.isTaken()).count();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }

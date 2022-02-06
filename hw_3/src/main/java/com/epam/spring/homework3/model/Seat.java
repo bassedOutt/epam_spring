@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @Builder
 public class Seat implements Entity {
-    private Long id;
+    private String id;
     private int row;
     private int seatNumber;
     private boolean isVip;
@@ -14,11 +14,4 @@ public class Seat implements Entity {
     private Session session;
     private Movie movie;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

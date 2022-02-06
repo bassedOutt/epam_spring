@@ -6,19 +6,11 @@ import lombok.Data;
 @Data
 @Builder
 public class SeatDto implements EntityDto{
-    private Long id;
+    private String id;
     private int row;
     private int seatNumber;
     private boolean isVip;
     private boolean isTaken;
     private SessionDto session;
     private MovieDto movie;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

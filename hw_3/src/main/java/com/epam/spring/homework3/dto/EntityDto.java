@@ -1,6 +1,6 @@
 package com.epam.spring.homework3.dto;
 
 public interface EntityDto {
-    Long getId();
-    void setId(Long id);
+    String getId();
+    void setId(String id);
 }
