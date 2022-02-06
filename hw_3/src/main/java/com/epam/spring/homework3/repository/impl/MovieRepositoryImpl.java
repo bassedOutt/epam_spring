@@ -3,12 +3,14 @@ package com.epam.spring.homework3.repository.impl;
 import com.epam.spring.homework3.exception.NoSuchEntityException;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.repository.MovieRepository;
+import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Repository
 public class MovieRepositoryImpl extends CrudRepositoryImpl<Movie> implements MovieRepository {
     @Override
     public List<Movie> findAllLocal(String language) {
