@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.repository.impl;
 
-import com.epam.spring.homework3.exception.DataAccessException;
 import com.epam.spring.homework3.exception.EntityCreationException;
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.User;
 import com.epam.spring.homework3.repository.UserRepository;
 import org.springframework.stereotype.Repository;
@@ -25,7 +25,7 @@ public class UserRepositoryImpl extends CrudRepositoryImpl<User> implements User
         return entities.stream()
                 .filter(user1 -> user1.getEmail().equals(email))
                 .findFirst()
-                .orElseThrow(()-> new DataAccessException("User with such email does not exist"));
+                .orElseThrow(()-> new EntityNotFoundException("User with such email does not exist"));
     }
 
     @Override

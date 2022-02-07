@@ -1,6 +1,6 @@
 package com.epam.spring.homework3.repository.impl;
 
-import com.epam.spring.homework3.exception.DataAccessException;
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Entity;
 import com.epam.spring.homework3.repository.CrudRepository;
 
@@ -22,7 +22,7 @@ public abstract class CrudRepositoryImpl<T extends Entity> implements CrudReposi
         return entities.stream()
                 .filter(entity -> entity.getId().equals(id))
                 .findFirst()
-                .orElseThrow(() -> new DataAccessException("Can't find entity"));
+                .orElseThrow(() -> new EntityNotFoundException("Can't find entity"));
     }
 
     //todo ensure uniqueness of each element
@@ -33,14 +33,14 @@ public abstract class CrudRepositoryImpl<T extends Entity> implements CrudReposi
     }
 
     @Override
-    public void delete(T entity) {
-        entities.removeIf(listEntity -> listEntity.getId().equals(listEntity.getId()));
+    public void delete(String id) {
+        entities.removeIf(listEntity -> listEntity.getId().equals(id));
     }
 
     @Override
     public void update(T entity) {
         int index = getIndexById(entity.getId());
-        if (index == -1) throw new DataAccessException("No entity with id " + entity.getId() + " in the database");
+        if (index == -1) throw new EntityNotFoundException("No entity with id " + entity.getId() + " in the database");
         entities.set(index, entity);
     }
 

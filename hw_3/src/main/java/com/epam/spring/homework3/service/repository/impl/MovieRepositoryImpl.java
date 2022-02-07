@@ -1,6 +1,6 @@
 package com.epam.spring.homework3.repository.impl;
 
-import com.epam.spring.homework3.exception.NoSuchEntityException;
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.repository.MovieRepository;
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ public class MovieRepositoryImpl extends CrudRepositoryImpl<Movie> implements Mo
         return entities.stream()
                 .filter(movie -> movie.getTitle().equals(movieName))
                 .findFirst()
-                .orElseThrow(() -> new NoSuchEntityException("no movie with title " + movieName));
+                .orElseThrow(() -> new EntityNotFoundException("no movie with title " + movieName));
     }
 
     @PostConstruct

@@ -13,5 +13,5 @@ public interface CrudRepository<T extends Entity> {
 
     void update(T entity);
 
-    void delete(T entity);
+    void delete(String id);
 }
