@@ -1,11 +1,9 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.MovieDto;
-import com.epam.spring.homework3.dto.UserDto;
 import com.epam.spring.homework3.dto.mapper.MovieMapper;
 import com.epam.spring.homework3.model.Movie;
-import com.epam.spring.homework3.model.User;
-import com.epam.spring.homework3.repository.MovieRepository;
+import com.epam.spring.homework3.service.repository.MovieRepository;
 import com.epam.spring.homework3.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,10 +58,9 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public void delete(MovieDto entity) {
-        log.info("deleting movie: {}", entity);
-        Movie movie = mapper.movieDtoToMovie(entity);
-        repository.delete(movie);
+    public void delete(String id) {
+        log.info("deleting movie with an id: {}", id);
+        repository.delete(id);
     }
 
     @Override

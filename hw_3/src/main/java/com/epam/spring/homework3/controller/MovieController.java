@@ -1,9 +1,7 @@
 package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.dto.MovieDto;
-import com.epam.spring.homework3.dto.UserDto;
 import com.epam.spring.homework3.service.MovieService;
-import com.epam.spring.homework3.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,10 +23,10 @@ public class MovieController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
-    public List<MovieDto> getAllMovies() {
-        log.info("getting list of movies");
-        return movieService.getAll();
+    @GetMapping(value = "{language}")
+    public List<MovieDto> getAllMovies(@PathVariable String language) {
+        log.info("getting list of movies. Language:{}",language);
+        return movieService.findLocalMovies(language);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -53,10 +51,10 @@ public class MovieController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping
-    public ResponseEntity<Void> deleteMovie(@RequestBody MovieDto movieDto) {
-        log.info("deleting movie : {}", movieDto);
-        movieService.delete(movieDto);
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Void> deleteMovie(@PathVariable String id) {
+        log.info("deleting movie with an id: {}", id);
+        movieService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

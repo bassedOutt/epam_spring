@@ -1,8 +1,9 @@
-package com.epam.spring.homework3.repository.impl;
+package com.epam.spring.homework3.service.repository.impl;
 
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Entity;
-import com.epam.spring.homework3.repository.CrudRepository;
+import com.epam.spring.homework3.model.Session;
+import com.epam.spring.homework3.service.repository.CrudRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,9 +28,10 @@ public abstract class CrudRepositoryImpl<T extends Entity> implements CrudReposi
 
     //todo ensure uniqueness of each element
     @Override
-    public void insert(T entity) {
+    public T insert(T entity) {
         entity.setId(UUID.randomUUID().toString());
         entities.add(entity);
+        return entity;
     }
 
     @Override

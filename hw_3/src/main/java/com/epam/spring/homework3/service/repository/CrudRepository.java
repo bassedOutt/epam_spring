@@ -1,4 +1,4 @@
-package com.epam.spring.homework3.repository;
+package com.epam.spring.homework3.service.repository;
 
 import com.epam.spring.homework3.model.Entity;
 
@@ -9,7 +9,7 @@ public interface CrudRepository<T extends Entity> {
 
     T getById(String id);
 
-    void insert(T entity);
+    T insert(T entity);
 
     void update(T entity);
 

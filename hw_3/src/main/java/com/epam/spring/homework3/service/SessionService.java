@@ -14,4 +14,9 @@ public interface SessionService extends CrudService<SessionDto> {
 
     //ensures that the newly created session's show time does not interfere with other sessions
     boolean noTimeOverlap(SessionDto s);
+
+    List<SessionDto> findAllLocalized(String language);
+
+    List<SessionDto> findSessionsWithTitle(String title);
+
 }

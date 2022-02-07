@@ -1,8 +1,9 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.SessionDto;
-import com.epam.spring.homework3.dto.mapper.MovieMapper;
-import com.epam.spring.homework3.repository.MovieRepository;
+import com.epam.spring.homework3.dto.mapper.SessionMapper;
+import com.epam.spring.homework3.model.Session;
+import com.epam.spring.homework3.service.repository.SessionRepository;
 import com.epam.spring.homework3.service.SessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,37 +23,43 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SessionServiceImpl implements SessionService {
 
-    private MovieRepository movieRepository;
-    private final MovieMapper mapper = MovieMapper.INSTANCE;
+    private SessionRepository repository;
+    private final SessionMapper mapper = SessionMapper.INSTANCE;
 
     @Autowired
-    public void setMovieRepository(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
+    public void setRepository(SessionRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public List<SessionDto> getAll() {
-        return null;
+        return repository.getAll()
+                .stream().map(mapper::sessionToSessionDto)
+                .collect(Collectors.toList());
     }
 
-    @Override
     public SessionDto getById(String id) {
-        return null;
+        log.info("getting session with id {} ", id);
+        return mapper.sessionToSessionDto(repository.getById(id));
     }
 
-    @Override
-    public SessionDto insert(SessionDto entity) {
-        return null;
+    public SessionDto insert(SessionDto sessionDto) {
+        log.info("inserting session: {}", sessionDto);
+        Session session = mapper.sessionDtoToSession(sessionDto);
+        repository.insert(session);
+        return sessionDto;
     }
 
-    @Override
-    public SessionDto update(SessionDto entity) {
-        return null;
+    public SessionDto update(SessionDto sessionDto) {
+        log.info("updating session: {}", sessionDto);
+        Session session = mapper.sessionDtoToSession(sessionDto);
+        repository.update(session);
+        return sessionDto;
     }
 
-    @Override
-    public void delete(SessionDto entity) {
-
+    public void delete(String id) {
+        log.info("deleting session with id: {}", id);
+        repository.delete(id);
     }
 
     public List<SessionDto> sortSessions(String sorter, List<SessionDto> sessions) {
@@ -67,6 +74,21 @@ public class SessionServiceImpl implements SessionService {
             }
         }
         return sessions;
+    }
+
+    public List<SessionDto> findAllLocalized(String language) {
+        log.info("Getting all localized sessions. Language: {}", language);
+        return repository.findAllLocalized(language)
+                .stream().map(mapper::sessionToSessionDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SessionDto> findSessionsWithTitle(String title) {
+        log.info("Finding sessions with title: {}",title);
+        return repository.findSessionWithMovie(title)
+                .stream().map(mapper::sessionToSessionDto)
+                .collect(Collectors.toList());
     }
 
     public List<SessionDto> findInRange(String filter, List<SessionDto> sessions) {
@@ -94,7 +116,7 @@ public class SessionServiceImpl implements SessionService {
         final Date begin1 = begin;
         final Date end1 = end;
 
-        log.info("filtering sessions in range: {}",filter);
+        log.info("filtering sessions in range: {}", filter);
         return sessions.stream().filter(session -> !(session.getDate().before(begin1)) && !(session.getDate().after(end1))).collect(Collectors.toList());
     }
 
@@ -117,6 +139,7 @@ public class SessionServiceImpl implements SessionService {
                         && s1.getEndTime().after(s.getEndTime()))
                         && s1.getStartTime().compareTo(s.getStartTime()) != 0 && s1.getEndTime().compareTo(s.getEndTime()) != 0);
     }
+
 
     private final Comparator<SessionDto> byName = Comparator.comparing((SessionDto s) -> s.getMovie().getTitle());
     private final Comparator<SessionDto> byTime = (SessionDto s1, SessionDto s2) ->

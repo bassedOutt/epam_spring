@@ -1,8 +1,8 @@
-package com.epam.spring.homework3.repository.impl;
+package com.epam.spring.homework3.service.repository.impl;
 
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Movie;
-import com.epam.spring.homework3.repository.MovieRepository;
+import com.epam.spring.homework3.service.repository.MovieRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.annotation.PostConstruct;

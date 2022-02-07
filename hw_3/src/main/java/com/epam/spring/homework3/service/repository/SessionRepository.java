@@ -1,4 +1,4 @@
-package com.epam.spring.homework3.repository;
+package com.epam.spring.homework3.service.repository;
 
 import com.epam.spring.homework3.model.Session;
 

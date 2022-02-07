@@ -42,12 +42,6 @@ public class UserController {
         return userService.insert(userDto);
     }
 
-//    @ResponseStatus(HttpStatus.OK)
-//    @PostMapping
-//    public UserDto getUser(@RequestBody String email, @RequestBody String password){
-//        return userService.findByEmailAndPassword(email,password);
-//    }
-
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
     public UserDto updateUser(@RequestBody UserDto userDto){
@@ -56,10 +50,10 @@ public class UserController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping
-    public ResponseEntity<Void> deleteUser(@RequestBody UserDto userDto){
-        log.info("deleting user : {}",userDto);
-        userService.delete(userDto);
+    @DeleteMapping(value = "{id}")
+    public ResponseEntity<Void> deleteUser(@PathVariable String id){
+        log.info("deleting user with an id: {}",id);
+        userService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

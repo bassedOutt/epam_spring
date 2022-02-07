@@ -10,5 +10,5 @@ public interface CrudService<T extends EntityDto> {
     T getById(String id);
     T insert(T entity);
     T update(T entity);
-    void delete(T entity);
+    void delete(String id);
 }

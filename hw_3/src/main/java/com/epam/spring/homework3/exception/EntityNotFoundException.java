@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.exception;
 
-public class NoSuchEntityException extends RuntimeException{
-    public NoSuchEntityException(String message){
+public class EntityNotFoundException extends RuntimeException{
+    public EntityNotFoundException(String message){
         super(message);
     }
 }

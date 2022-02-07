@@ -12,6 +12,4 @@ public class Seat implements Entity {
     private boolean isVip;
     private boolean isTaken;
     private Session session;
-    private Movie movie;
-
 }
