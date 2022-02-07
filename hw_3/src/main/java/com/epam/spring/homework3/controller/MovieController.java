@@ -23,15 +23,23 @@ public class MovieController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "{language}")
-    public List<MovieDto> getAllMovies(@PathVariable String language) {
+    @GetMapping
+    public List<MovieDto> getAllMovies(@RequestParam String language) {
         log.info("getting list of movies. Language:{}",language);
         return movieService.findLocalMovies(language);
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "{title}")
-    public MovieDto getMovie(@PathVariable String title) {
+    @GetMapping(value = "{id}")
+    public MovieDto getMovie(@PathVariable String id) {
+        log.info("getting movie by id: {}", id);
+        return movieService.getById(id);
+    }
+
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public MovieDto getMovieByTitle(@RequestParam String title) {
         log.info("getting movie by title: {}", title);
         return movieService.findByTitle(title);
     }

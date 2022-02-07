@@ -2,7 +2,6 @@ package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.service.SessionService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +12,7 @@ import java.util.List;
 
 @RestController
 @Slf4j
-@RequiredArgsConstructor
+@RequestMapping("api/v1/session")
 public class SessionController {
     private SessionService sessionService;
 
@@ -24,7 +23,7 @@ public class SessionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SessionDto> getAllSessions(@PathVariable String language) {
+    public List<SessionDto> getAllSessions(@RequestParam String language) {
         log.info("getting list of sessions");
         return sessionService.findAllLocalized(language);
     }
