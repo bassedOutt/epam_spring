@@ -6,6 +6,7 @@ import com.epam.spring.homework3.model.Session;
 import com.epam.spring.homework3.service.repository.SessionRepository;
 import org.springframework.stereotype.Repository;
 
+import javax.annotation.PostConstruct;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
@@ -51,5 +52,10 @@ public class SessionRepositoryImpl extends CrudRepositoryImpl<Session> implement
             }
         }
         session.setSeats(seats);
+    }
+
+    @PostConstruct
+    public void init(){
+
     }
 }
