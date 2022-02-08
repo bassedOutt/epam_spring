@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class TicketServiceImpl implements TicketService {
+class TicketServiceImpl implements TicketService {
 
     private TicketRepository repository;
     private final TicketMapper mapper = TicketMapper.INSTANCE;

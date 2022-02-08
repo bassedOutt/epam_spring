@@ -52,7 +52,7 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable String id){
-        log.info("deleting user with an id: {}",id);
+        log.info("deleting user with id: {}",id);
         userService.delete(id);
         return ResponseEntity.noContent().build();
     }

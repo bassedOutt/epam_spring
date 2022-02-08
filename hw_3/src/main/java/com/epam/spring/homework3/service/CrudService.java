@@ -1,7 +1,6 @@
 package com.epam.spring.homework3.service;
 
 import com.epam.spring.homework3.dto.EntityDto;
-import com.epam.spring.homework3.dto.UserDto;
 
 import java.util.List;
 

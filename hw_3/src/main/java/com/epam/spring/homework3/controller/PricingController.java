@@ -22,7 +22,6 @@ public class PricingController {
         this.service = service;
     }
 
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<PricingDto> getAllPricings(){
@@ -54,7 +53,7 @@ public class PricingController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
     public ResponseEntity<Void> deletePricing(@PathVariable String id){
-        log.info("deleting user with an id: {}",id);
+        log.info("deleting pricing with id: {}",id);
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

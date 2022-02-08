@@ -1,9 +1,7 @@
 package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.dto.SeatDto;
-import com.epam.spring.homework3.dto.TicketDto;
 import com.epam.spring.homework3.service.SeatService;
-import com.epam.spring.homework3.service.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,22 +31,22 @@ public class SeatController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public SeatDto createTicket(@RequestBody SeatDto seatDto){
+    public SeatDto createSeat(@RequestBody SeatDto seatDto){
         log.info("creating seat : {}",seatDto);
         return service.insert(seatDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public SeatDto updateTicket(@RequestBody SeatDto seatDto){
+    public SeatDto updateSeat(@RequestBody SeatDto seatDto){
         log.info("updating seat with id : {}",seatDto.getId());
         return service.update(seatDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable String id){
-        log.info("deleting seat with an id: {}",id);
+    public ResponseEntity<Void> deleteSeat(@PathVariable String id){
+        log.info("deleting seat with id: {}",id);
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

@@ -1,8 +1,6 @@
 package com.epam.spring.homework3.controller;
 
-import com.epam.spring.homework3.dto.PricingDto;
 import com.epam.spring.homework3.dto.TicketDto;
-import com.epam.spring.homework3.service.PricingService;
 import com.epam.spring.homework3.service.TicketService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +24,7 @@ public class TicketController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<TicketDto> getAllPricings(){
+    public List<TicketDto> getAllTicket(){
         log.info("getting list of tickets");
         return service.getAll();
     }
@@ -48,7 +46,7 @@ public class TicketController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
     public ResponseEntity<Void> deleteTicket(@PathVariable String id){
-        log.info("deleting ticket with an id: {}",id);
+        log.info("deleting ticket with id: {}",id);
         service.delete(id);
         return ResponseEntity.noContent().build();
     }

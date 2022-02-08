@@ -13,7 +13,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
-public class SessionRepositoryImpl extends CrudRepositoryImpl<Session> implements SessionRepository {
+class SessionRepositoryImpl extends CrudRepositoryImpl<Session> implements SessionRepository {
     @Override
     public List<Session> findAllLocalized(String language) {
         return entities.stream()

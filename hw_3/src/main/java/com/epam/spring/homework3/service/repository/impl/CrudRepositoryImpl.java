@@ -2,14 +2,13 @@ package com.epam.spring.homework3.service.repository.impl;
 
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Entity;
-import com.epam.spring.homework3.model.Session;
 import com.epam.spring.homework3.service.repository.CrudRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class CrudRepositoryImpl<T extends Entity> implements CrudRepository<T> {
+abstract class CrudRepositoryImpl<T extends Entity> implements CrudRepository<T> {
 
     protected List<T> entities = new ArrayList<>();
 

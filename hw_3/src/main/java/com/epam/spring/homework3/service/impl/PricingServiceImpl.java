@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-public class PricingServiceImpl implements PricingService {
+class PricingServiceImpl implements PricingService {
 
     private PricingRepository repository;
     private final PricingMapper mapper = PricingMapper.INSTANCE;

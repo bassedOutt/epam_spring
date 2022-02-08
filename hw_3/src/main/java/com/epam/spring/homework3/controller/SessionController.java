@@ -23,9 +23,18 @@ public class SessionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SessionDto> getAllSessions(@RequestParam String language) {
+    public List<SessionDto> getAllSessions(@RequestParam String language,
+                                           @RequestParam(required = false) String sorter,
+                                           @RequestParam(required = false) String range) {
         log.info("getting list of sessions");
-        return sessionService.findAllLocalized(language);
+        List<SessionDto> list = sessionService.findAllLocalized(language);
+        if (sorter != null) {
+            list = sessionService.sortSessions(sorter, list);
+        }
+        if (range != null) {
+            list = sessionService.findInRange(range, list);
+        }
+        return list;
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -37,21 +46,21 @@ public class SessionController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public SessionDto insertMovie(@RequestBody SessionDto sessionDto) {
+    public SessionDto insertSession(@RequestBody SessionDto sessionDto) {
         log.info("creating session : {}", sessionDto);
         return sessionService.insert(sessionDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public SessionDto updateMovie(@RequestBody SessionDto sessionDto) {
+    public SessionDto updateSession(@RequestBody SessionDto sessionDto) {
         log.info("updating session : {}", sessionDto);
         return sessionService.update(sessionDto);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping
-    public ResponseEntity<Void> deleteMovie(@PathVariable String id) {
+    @DeleteMapping("{id}")
+    public ResponseEntity<Void> deleteSession(@PathVariable String id) {
         log.info("deleting session with an id: {}", id);
         sessionService.delete(id);
         return ResponseEntity.noContent().build();

@@ -11,7 +11,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Repository
-public class MovieRepositoryImpl extends CrudRepositoryImpl<Movie> implements MovieRepository {
+class MovieRepositoryImpl extends CrudRepositoryImpl<Movie> implements MovieRepository {
     @Override
     public List<Movie> findAllLocal(String language) {
         return entities.stream()

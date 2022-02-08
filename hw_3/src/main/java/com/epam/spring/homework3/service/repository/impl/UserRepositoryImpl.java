@@ -13,13 +13,6 @@ import java.util.UUID;
 @Repository
 public class UserRepositoryImpl extends CrudRepositoryImpl<User> implements UserRepository {
 
-    public User findByEmailAndPassword(String email, String password){
-        return entities.stream()
-                .filter(user1 -> user1.getEmail().equals(email)&&user1.getPassword().equals(password))
-                .findFirst()
-                .orElse(null);
-    }
-
     @Override
     public User findByEmail(String email) {
         return entities.stream()

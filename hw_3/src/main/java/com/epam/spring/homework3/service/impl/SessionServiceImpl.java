@@ -2,6 +2,7 @@ package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.dto.mapper.SessionMapper;
+import com.epam.spring.homework3.exception.EntityCreationException;
 import com.epam.spring.homework3.model.Session;
 import com.epam.spring.homework3.service.repository.SessionRepository;
 import com.epam.spring.homework3.service.SessionService;
@@ -21,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class SessionServiceImpl implements SessionService {
+class SessionServiceImpl implements SessionService {
 
     private SessionRepository repository;
     private final SessionMapper mapper = SessionMapper.INSTANCE;
@@ -45,9 +46,13 @@ public class SessionServiceImpl implements SessionService {
 
     public SessionDto insert(SessionDto sessionDto) {
         log.info("inserting session: {}", sessionDto);
-        Session session = mapper.sessionDtoToSession(sessionDto);
-        repository.insert(session);
-        return sessionDto;
+        if (!noTimeOverlap(sessionDto)) {
+            throw new EntityCreationException("There are already movie sessoin going in that time");
+        } else {
+            Session session = mapper.sessionDtoToSession(sessionDto);
+            repository.insert(session);
+            return sessionDto;
+        }
     }
 
     public SessionDto update(SessionDto sessionDto) {
@@ -85,7 +90,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public List<SessionDto> findSessionsWithTitle(String title) {
-        log.info("Finding sessions with title: {}",title);
+        log.info("Finding sessions with title: {}", title);
         return repository.findSessionWithMovie(title)
                 .stream().map(mapper::sessionToSessionDto)
                 .collect(Collectors.toList());
