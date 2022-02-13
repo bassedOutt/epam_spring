@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 
-src/main/java/com/epam/spring/homework3/test
+hw_3.iml
