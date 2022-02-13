@@ -43,9 +43,9 @@ class MovieServiceImpl implements MovieService {
     @Override
     public MovieDto insert(MovieDto entity) {
         log.info("Inserting movie :{}", entity);
-        repository.insert(mapper.movieDtoToMovie(entity));
+        MovieDto insertedMovie = mapper.movieToMovieDto(repository.insert(mapper.movieDtoToMovie(entity)));
         log.info("Movie was inserted");
-        return entity;
+        return insertedMovie;
     }
 
     @Override

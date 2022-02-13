@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -38,14 +39,14 @@ public class PricingController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public PricingDto createPricing(@RequestBody PricingDto pricingDto){
+    public PricingDto createPricing(@RequestBody @Valid PricingDto pricingDto){
         log.info("creating pricing : {}",pricingDto);
         return service.insert(pricingDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public PricingDto updatePricing(@RequestBody PricingDto pricingDto){
+    public PricingDto updatePricing(@RequestBody @Valid PricingDto pricingDto){
         log.info("updating pricing with id : {}",pricingDto.getId());
         return service.update(pricingDto);
     }

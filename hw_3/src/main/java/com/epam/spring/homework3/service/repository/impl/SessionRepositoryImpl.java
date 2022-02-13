@@ -54,8 +54,4 @@ class SessionRepositoryImpl extends CrudRepositoryImpl<Session> implements Sessi
         session.setSeats(seats);
     }
 
-    @PostConstruct
-    public void init(){
-
-    }
 }

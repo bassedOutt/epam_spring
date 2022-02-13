@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -23,7 +24,7 @@ public class MovieController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/all")
+    @GetMapping("/all/{language}")
     public List<MovieDto> getAllMovies(@PathVariable String language) {
         log.info("getting list of movies, language:{}",language);
         return movieService.findLocalMovies(language);
@@ -45,14 +46,14 @@ public class MovieController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public MovieDto insertMovie(@RequestBody MovieDto movieDto) {
+    public MovieDto insertMovie(@RequestBody @Valid MovieDto movieDto) {
         log.info("creating movie : {}", movieDto);
         return movieService.insert(movieDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public MovieDto updateMovie(@RequestBody MovieDto movieDto) {
+    public MovieDto updateMovie(@RequestBody @Valid MovieDto movieDto) {
         log.info("updating movie : {}", movieDto);
         return movieService.update(movieDto);
     }
