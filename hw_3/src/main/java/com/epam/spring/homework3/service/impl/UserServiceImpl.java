@@ -38,10 +38,8 @@ class UserServiceImpl implements UserService {
 
     public UserDto insert(UserDto entity) {
         log.info("inserting user: {}", entity);
-
         User user = mapper.userDtoToUser(entity);
-        repository.insert(user);
-        return entity;
+        return mapper.userToUserDto(repository.insert(user));
     }
 
     public UserDto update(UserDto entity) {

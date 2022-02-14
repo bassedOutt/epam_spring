@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,14 +32,14 @@ public class TicketController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public TicketDto createTicket(@RequestBody TicketDto ticketDto){
+    public TicketDto createTicket(@RequestBody @Valid TicketDto ticketDto){
         log.info("creating ticket : {}",ticketDto);
         return service.insert(ticketDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public TicketDto updateTicket(@RequestBody TicketDto ticketDto){
+    public TicketDto updateTicket(@RequestBody @Valid TicketDto ticketDto){
         log.info("updating ticket with id : {}",ticketDto.getId());
         return service.update(ticketDto);
     }

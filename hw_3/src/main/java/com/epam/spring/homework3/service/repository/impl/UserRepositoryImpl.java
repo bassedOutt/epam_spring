@@ -18,14 +18,16 @@ public class UserRepositoryImpl extends CrudRepositoryImpl<User> implements User
         return entities.stream()
                 .filter(user1 -> user1.getEmail().equals(email))
                 .findFirst()
-                .orElseThrow(()-> new EntityNotFoundException("User with such email does not exist"));
+                .orElse(null);
     }
 
     @Override
     public User insert(User user){
         User foundUser = findByEmail(user.getEmail());
-        if(foundUser==null)
+        if(foundUser==null) {
+            user.setId(UUID.randomUUID().toString());
             entities.add(user);
+        }
         else
             throw new EntityCreationException("User with such credentials already exists");
         return user;

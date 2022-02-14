@@ -1,8 +1,10 @@
 package com.epam.spring.homework3.dto;
 
+import com.epam.spring.homework3.validation.EmailConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 
@@ -19,12 +21,11 @@ public class UserDto implements EntityDto{
     @NotEmpty
     private String surname;
 
-    @Email
+    @EmailConstraint
     private String email;
 
     @NotEmpty
-    @Min(6)
-    @Max(30)
+    @Length(min = 6,max = 30)
     private String password;
 
     private boolean isAdmin;
