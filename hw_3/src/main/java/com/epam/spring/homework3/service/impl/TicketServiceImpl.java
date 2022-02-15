@@ -24,35 +24,40 @@ class TicketServiceImpl implements TicketService {
         this.repository = repository;
     }
 
-    public List<TicketDto> getAll() {
+    @Override
+    public List<TicketDto> findAll() {
         log.info("getting list of tickets");
-        return repository.getAll().stream()
+        return repository.findAll().stream()
                 .map(mapper::ticketToTicketDto)
                 .collect(Collectors.toList());
     }
 
-    public TicketDto getById(String id) {
+    @Override
+    public TicketDto getById(Long id) {
         log.info("getting ticket with id {} ", id);
         return mapper.ticketToTicketDto(repository.getById(id));
     }
 
+    @Override
     public TicketDto insert(TicketDto entity) {
         log.info("inserting ticket: {}", entity);
         Ticket ticket = mapper.ticketDtoToTicket(entity);
-        repository.insert(ticket);
+        repository.save(ticket);
         return entity;
     }
 
+    @Override
     public TicketDto update(TicketDto entity) {
         log.info("updating ticket with id: {}", entity.getId());
         Ticket ticket = mapper.ticketDtoToTicket(entity);
-        repository.update(ticket);
+        repository.save(ticket);
         return entity;
     }
 
-    public void delete(String id) {
+    @Override
+    public void delete(Long id) {
         log.info("deleting ticket with id: {}", id);
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
 }

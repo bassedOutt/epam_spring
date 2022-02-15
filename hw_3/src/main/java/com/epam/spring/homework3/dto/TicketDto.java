@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 @AllArgsConstructor
-public class TicketDto implements EntityDto {
+public class TicketDto {
 
     private String id;
 
@@ -19,10 +19,10 @@ public class TicketDto implements EntityDto {
 
     @Min(value = 1, message = "price can not be null")
     private double price;
-
-    @NotNull(message = "session can not be null")
-    private SessionDto Session;
-
-    @NotNull(message = "seat can not be null")
-    private SeatDto seat;
+//
+//    @NotNull(message = "session can not be null")
+//    private SessionDto Session;
+//
+//    @NotNull(message = "seat can not be null")
+//    private SeatDto seat;
 }

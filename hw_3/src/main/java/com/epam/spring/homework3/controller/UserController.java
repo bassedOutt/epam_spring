@@ -27,7 +27,7 @@ public class UserController {
     @GetMapping
     public List<UserDto> getAllUsers(){
         log.info("getting list of users");
-        return userService.getAll();
+        return userService.findAll();
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -53,7 +53,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable String id){
+    public ResponseEntity<Void> deleteUser(@PathVariable Long id){
         log.info("deleting user with id: {}",id);
         userService.delete(id);
         return ResponseEntity.noContent().build();

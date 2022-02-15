@@ -27,7 +27,7 @@ public class TicketController {
     @GetMapping
     public List<TicketDto> getAllTicket(){
         log.info("getting list of tickets");
-        return service.getAll();
+        return service.findAll();
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -46,7 +46,7 @@ public class TicketController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deleteTicket(@PathVariable String id){
+    public ResponseEntity<Void> deleteTicket(@PathVariable Long id){
         log.info("deleting ticket with id: {}",id);
         service.delete(id);
         return ResponseEntity.noContent().build();

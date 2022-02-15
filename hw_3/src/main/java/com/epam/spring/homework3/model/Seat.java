@@ -3,9 +3,12 @@ package com.epam.spring.homework3.model;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.persistence.Entity;
+
 @Data
 @Builder
-public class Seat implements Entity {
+@Entity
+public class Seat  {
     private String id;
     private int row;
     private int seatNumber;

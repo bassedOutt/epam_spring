@@ -3,11 +3,13 @@ package com.epam.spring.homework3.model;
 import lombok.Builder;
 import lombok.Data;
 
+import javax.persistence.Entity;
 import java.sql.Date;
 
 @Data
 @Builder
-public class Movie implements Entity {
+@Entity
+public class Movie {
 
     private String id;
     private int duration;

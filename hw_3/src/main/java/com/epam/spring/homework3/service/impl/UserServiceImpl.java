@@ -26,12 +26,12 @@ class UserServiceImpl implements UserService {
         this.repository = repository;
     }
 
-    public List<UserDto> getAll() {
+    public List<UserDto> findAll() {
         log.info("getting list of users");
-        return repository.getAll().stream().map(mapper::userToUserDto).collect(Collectors.toList());
+        return repository.findAll().stream().map(mapper::userToUserDto).collect(Collectors.toList());
     }
 
-    public UserDto getById(String id) {
+    public UserDto getById(Long id) {
         log.info("getting user with id {} ", id);
         return mapper.userToUserDto(repository.getById(id));
     }
@@ -39,21 +39,20 @@ class UserServiceImpl implements UserService {
     public UserDto insert(UserDto entity) {
         log.info("inserting user: {}", entity);
         User user = mapper.userDtoToUser(entity);
-        return mapper.userToUserDto(repository.insert(user));
+        return mapper.userToUserDto(repository.save(user));
     }
 
     public UserDto update(UserDto entity) {
         log.info("updating user: {}", entity);
         User user = mapper.userDtoToUser(entity);
-        repository.update(user);
+        repository.save(user);
         return entity;
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         log.info("deleting user with an id: {}", id);
-        repository.delete(id);
+        repository.deleteById(id);
     }
-
 
     public UserDto findByEmail(String email) {
         log.info("Searching for user with email: {}", email);
