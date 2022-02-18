@@ -17,15 +17,21 @@ public class Session{
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(nullable = false)
     private Time startTime;
+
+    @Column(nullable = false)
     private Time endTime;
+
+    @Column(nullable = false)
     private Date date;
 
     @ManyToOne
     @JoinColumn(name = "pricing_id")
     private Pricing pricing;
 
-    @OneToMany(mappedBy = "session")
+    @OneToMany(mappedBy = "session",orphanRemoval = true)
     private List<Seat> seats;
 
     @ManyToOne

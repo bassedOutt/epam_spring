@@ -22,13 +22,15 @@ public class Ticket {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column(nullable = false)
     private double price;
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany(mappedBy = "ticket",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Seat> seat;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
 }

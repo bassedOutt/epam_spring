@@ -16,14 +16,14 @@ public class Seat {
     @GeneratedValue
     private Long id;
 
-    @Column(name = "seat_number")
+    @Column(name = "seat_number",nullable = false)
     private int seatNumber;
 
     @Column(name = "is_vip")
     private boolean isVip;
 
     @ManyToOne
-    @JoinColumn(name = "session_id")
+    @JoinColumn(name = "session_id",nullable = false)
     private Session session;
 
     @ManyToOne
