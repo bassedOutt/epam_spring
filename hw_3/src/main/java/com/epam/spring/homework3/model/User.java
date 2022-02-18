@@ -11,9 +11,8 @@ import java.util.List;
 
 @Data
 @Builder
-@Entity
-@AllArgsConstructor
-public class User{
+@Entity(name = "user")
+public class User {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,6 +22,6 @@ public class User{
     private String password;
     private boolean isAdmin;
 
-    @OneToMany
+    @OneToMany(mappedBy = "user")
     private List<Ticket> tickets;
 }

@@ -28,7 +28,7 @@ public class SessionController {
                                            @RequestParam(required = false) String sorter,
                                            @RequestParam(required = false) String range) {
         log.info("getting list of sessions");
-        List<SessionDto> list = sessionService.findAllLocalized(language);
+        List<SessionDto> list = sessionService.getAll();
         if (sorter != null) {
             list = sessionService.sortSessions(sorter, list);
         }
@@ -38,12 +38,12 @@ public class SessionController {
         return list;
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping(value = "{title}")
-    public List<SessionDto> getSessionWithMovie(@PathVariable String title) {
-        log.info("getting all sessions with title: {}", title);
-        return sessionService.findSessionsWithTitle(title);
-    }
+//    @ResponseStatus(HttpStatus.OK)
+//    @GetMapping(value = "{title}")
+//    public List<SessionDto> getSessionWithMovie(@PathVariable String title) {
+//        log.info("getting all sessions with title: {}", title);
+//        return sessionService.findSessionsWithTitle(title);
+//    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -61,7 +61,7 @@ public class SessionController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{id}")
-    public ResponseEntity<Void> deleteSession(@PathVariable String id) {
+    public ResponseEntity<Void> deleteSession(@PathVariable Long id) {
         log.info("deleting session with an id: {}", id);
         sessionService.delete(id);
         return ResponseEntity.noContent().build();

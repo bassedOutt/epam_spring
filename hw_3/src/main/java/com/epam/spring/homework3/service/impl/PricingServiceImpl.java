@@ -26,10 +26,10 @@ class PricingServiceImpl implements PricingService {
 
     public List<PricingDto> getAll() {
         log.info("getting list of pricings");
-        return repository.getAll().stream().map(mapper::pricingToPricingDto).collect(Collectors.toList());
+        return repository.findAll().stream().map(mapper::pricingToPricingDto).collect(Collectors.toList());
     }
 
-    public PricingDto getById(String id) {
+    public PricingDto getById(Long id) {
         log.info("getting pricing with id {} ", id);
         return mapper.pricingToPricingDto(repository.getById(id));
     }
@@ -37,26 +37,26 @@ class PricingServiceImpl implements PricingService {
     public PricingDto insert(PricingDto entity) {
         log.info("inserting pricing: {}", entity);
         Pricing pricing = mapper.pricingDtoToPricing(entity);
-        repository.insert(pricing);
+        repository.save(pricing);
         return entity;
     }
 
     public PricingDto update(PricingDto entity) {
         log.info("updating pricing: {}", entity);
         Pricing pricing = mapper.pricingDtoToPricing(entity);
-        repository.update(pricing);
+        repository.save(pricing);
         return entity;
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         log.info("deleting user with an id: {}", id);
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     @Override
     public PricingDto findByName(String name) {
         log.info("Searching for pricing with name: {}", name);
-        return repository.getAll().stream()
+        return repository.findAll().stream()
                 .filter(pricing -> pricing.getName().equals(name))
                 .findFirst()
                 .map(mapper::pricingToPricingDto)

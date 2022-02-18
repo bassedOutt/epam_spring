@@ -25,14 +25,14 @@ public class MovieController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/all/{language}")
-    public List<MovieDto> getAllMovies(@PathVariable String language) {
+    public List<MovieDto> getAllMovies(@PathVariable(required = false)  String language) {
         log.info("getting list of movies, language:{}",language);
-        return movieService.findLocalMovies(language);
+        return movieService.getAll();
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(value = "{id}")
-    public MovieDto getMovie(@PathVariable String id) {
+    public MovieDto getMovie(@PathVariable Long id) {
         log.info("getting movie by id: {}", id);
         return movieService.getById(id);
     }
@@ -60,7 +60,7 @@ public class MovieController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deleteMovie(@PathVariable String id) {
+    public ResponseEntity<Void> deleteMovie(@PathVariable Long id) {
         log.info("deleting movie with id: {}", id);
         movieService.delete(id);
         return ResponseEntity.noContent().build();

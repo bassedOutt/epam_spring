@@ -1,10 +1,10 @@
 package com.epam.spring.homework3.service.repository;
 
 import com.epam.spring.homework3.model.Movie;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+public interface MovieRepository extends JpaRepository<Movie,Long> {
+    Movie findMovieByEnTitle(String title);
+    Movie findMovieByUaTitle(String title);
 
-public interface MovieRepository extends CrudRepository<Movie>{
-    List<Movie> findAllLocal(String language);
-    Movie findByTitle(String movieName);
 }

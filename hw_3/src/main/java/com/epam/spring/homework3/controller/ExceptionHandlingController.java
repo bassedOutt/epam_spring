@@ -25,21 +25,21 @@ public class ExceptionHandlingController {
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public ApiError handleEntityNotFoundException(EntityNotFoundException ex, HandlerMethod hm) {
-        log.error("Handling exception : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
+        log.error("handleEntityNotFoundException : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
         return new ApiError(ex.getMessage(), ENTITY_NOT_FOUND_ERROR_TYPE, LocalDateTime.now());
     }
 
     @ExceptionHandler(EntityCreationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ApiError handleEntityCreationException(EntityCreationException ex, HandlerMethod hm) {
-        log.error("Handling exception : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
+        log.error("handleEntityCreationException : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
         return new ApiError(ex.getMessage(), ENTITY_CREATION_FAILED_ERROR_TYPE, LocalDateTime.now());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public List<ApiError> handleNotValidArgumentException(MethodArgumentNotValidException ex, HandlerMethod hm) {
-        log.error("Handling exception : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
+        log.error("handleNotValidArgumentException : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
         return ex.getBindingResult().getAllErrors().stream()
                 .map(err -> new ApiError(err.getDefaultMessage(), VALIDATION_ERROR_TYPE,
                         LocalDateTime.now()))
@@ -49,7 +49,7 @@ public class ExceptionHandlingController {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handleInternalServerError(Exception ex, HandlerMethod hm) {
-        log.error("Handling exception : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
+        log.error("handleInternalServerError : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
         return new ApiError(ex.getMessage(), FATAL_ERROR_TYPE, LocalDateTime.now());
     }
 

@@ -4,8 +4,16 @@ import com.epam.spring.homework3.dto.MovieDto;
 
 import java.util.List;
 
-public interface MovieService extends CrudService<MovieDto> {
-    List<MovieDto> findLocalMovies(String language);
+public interface MovieService {
+    List<MovieDto> getAll();
+
+    MovieDto getById(Long id);
+
+    MovieDto insert(MovieDto entity);
+
+    MovieDto update(MovieDto entity);
+
+    void delete(Long id);
 
     MovieDto findByTitle(String title);
 

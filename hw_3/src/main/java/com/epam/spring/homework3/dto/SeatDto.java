@@ -1,31 +1,26 @@
 package com.epam.spring.homework3.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import com.epam.spring.homework3.model.Session;
+import com.epam.spring.homework3.model.Ticket;
+import com.epam.spring.homework3.model.User;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+public class SeatDto {
 
-@Data
-@Builder
-@AllArgsConstructor
-public class SeatDto implements EntityDto{
+    private static final double VIP_PRICE_COEFFICIENT = 30;
 
-    private String id;
+    private Long id;
 
-    @Min(value = 1,message = "Row can not be less than 1")
-    @Max(value = 5,message = "Row can not be more than 5")
-    private int row;
-
-    @Min(value = 1,message = "Seat number can not be less than 1")
-    @Max(value = 10,message = "Seat can not be more than 10")
     private int seatNumber;
 
     private boolean isVip;
-    private boolean isTaken;
 
-    @NotNull( message = "Session can not be null")
-    private SessionDto session;
+    private Session session;
+
+    private User user;
+
+    private Ticket ticket;
+
+    public boolean isTaken() {
+        return user != null;
+    }
 }

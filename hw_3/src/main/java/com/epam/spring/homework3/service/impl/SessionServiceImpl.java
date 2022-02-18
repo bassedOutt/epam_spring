@@ -4,6 +4,7 @@ import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.dto.mapper.SessionMapper;
 import com.epam.spring.homework3.exception.EntityCreationException;
 import com.epam.spring.homework3.model.Session;
+import com.epam.spring.homework3.service.LanguageService;
 import com.epam.spring.homework3.service.repository.SessionRepository;
 import com.epam.spring.homework3.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +34,12 @@ class SessionServiceImpl implements SessionService {
 
     @Override
     public List<SessionDto> getAll() {
-        return repository.getAll()
+        return repository.findAll()
                 .stream().map(mapper::sessionToSessionDto)
                 .collect(Collectors.toList());
     }
 
-    public SessionDto getById(String id) {
+    public SessionDto getById(Long id) {
         log.info("getting session with id {} ", id);
         return mapper.sessionToSessionDto(repository.getById(id));
     }
@@ -49,7 +50,7 @@ class SessionServiceImpl implements SessionService {
             throw new EntityCreationException("There are already movie session going in that time");
         } else {
             Session session = mapper.sessionDtoToSession(sessionDto);
-            repository.insert(session);
+            repository.save(session);
             return sessionDto;
         }
     }
@@ -57,13 +58,13 @@ class SessionServiceImpl implements SessionService {
     public SessionDto update(SessionDto sessionDto) {
         log.info("updating session: {}", sessionDto);
         Session session = mapper.sessionDtoToSession(sessionDto);
-        repository.update(session);
+        repository.save(session);
         return sessionDto;
     }
 
-    public void delete(String id) {
+    public void delete(Long id) {
         log.info("deleting session with id: {}", id);
-        repository.delete(id);
+        repository.deleteById(id);
     }
 
     public List<SessionDto> sortSessions(String sorter, List<SessionDto> sessions) {
@@ -80,20 +81,20 @@ class SessionServiceImpl implements SessionService {
         return sessions;
     }
 
-    public List<SessionDto> findAllLocalized(String language) {
-        log.info("Getting all localized sessions. Language: {}", language);
-        return repository.findAllLocalized(language)
-                .stream().map(mapper::sessionToSessionDto)
-                .collect(Collectors.toList());
-    }
+//    public List<SessionDto> findAllLocalized(String language) {
+//        log.info("Getting all localized sessions. Language: {}", language);
+//        return repository.findAllLocalized(language)
+//                .stream().map(mapper::sessionToSessionDto)
+//                .collect(Collectors.toList());
+//    }
 
-    @Override
-    public List<SessionDto> findSessionsWithTitle(String title) {
-        log.info("Finding sessions with title: {}", title);
-        return repository.findSessionWithMovie(title)
-                .stream().map(mapper::sessionToSessionDto)
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<SessionDto> findSessionsWithTitle(String title) {
+//        log.info("Finding sessions with title: {}", title);
+//        return repository.findSessionWithMovie(title)
+//                .stream().map(mapper::sessionToSessionDto)
+//                .collect(Collectors.toList());
+//    }
 
     public List<SessionDto> findInRange(String filter, List<SessionDto> sessions) {
 
@@ -145,7 +146,7 @@ class SessionServiceImpl implements SessionService {
     }
 
 
-    private final Comparator<SessionDto> byName = Comparator.comparing((SessionDto s) -> s.getMovie().getTitle());
+    private final Comparator<SessionDto> byName = Comparator.comparing((SessionDto s) -> s.getMovie().getTitle(LanguageService.getUserLanguage()));
     private final Comparator<SessionDto> byTime = (SessionDto s1, SessionDto s2) ->
             s1.getDate().compareTo(s2.getDate()) == 0 ? s1.getStartTime().compareTo(s2.getStartTime()) : s1.getDate().compareTo(s2.getDate());
 

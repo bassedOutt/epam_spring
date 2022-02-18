@@ -53,7 +53,7 @@ public class PricingController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
-    public ResponseEntity<Void> deletePricing(@PathVariable String id){
+    public ResponseEntity<Void> deletePricing(@PathVariable Long id){
         log.info("deleting pricing with id: {}",id);
         service.delete(id);
         return ResponseEntity.noContent().build();

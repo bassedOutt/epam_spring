@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.dto;
 
+import com.epam.spring.homework3.model.Session;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,11 +8,13 @@ import lombok.Data;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.sql.Date;
+import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
 @AllArgsConstructor
-public class MovieDto implements EntityDto{
+public class MovieDto implements EntityDto {
 
     private String id;
 
@@ -21,18 +24,26 @@ public class MovieDto implements EntityDto{
     @NotEmpty(message = "Image url can not be empty")
     private String imageUrl;
 
-    @Min(value = 1,message = "Price can not be 0 or less")
+    @Min(value = 1, message = "Price can not be 0 or less")
     private int price;
 
-    private Date startDate;
+    private Date releaseDate;
 
-    @NotEmpty(message = "Movie title can not be empty")
-    private String title;
+    private String uaTitle;
+    private String uaDescription;
 
-    @NotEmpty(message = "Movie description can not be empty")
-    private String description;
+    private String enTitle;
+    private String enDescription;
 
-    @NotEmpty(message = "Language can not be empty")
-    private String language;
+    private List<Session> sessionList;
 
+    public String getTitle(String locale) {
+        if (locale.equals("en")) {
+            return enTitle;
+        } else if (locale.equals("ua")) {
+            return uaTitle;
+        }
+        return null;
+
+    }
 }
