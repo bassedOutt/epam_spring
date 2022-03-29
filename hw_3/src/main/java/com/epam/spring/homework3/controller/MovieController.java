@@ -24,7 +24,7 @@ public class MovieController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/all/{language}")
+    @GetMapping("/all")
     public List<MovieDto> getAllMovies(@PathVariable(required = false)  String language) {
         log.info("getting list of movies, language:{}",language);
         return movieService.getAll();

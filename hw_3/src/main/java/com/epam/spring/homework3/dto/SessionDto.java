@@ -1,6 +1,7 @@
 package com.epam.spring.homework3.dto;
 
 import com.epam.spring.homework3.model.Ticket;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,7 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SessionDto implements EntityDto {
 
-    private String id;
+    private Long id;
 
     @NotNull(message = "movie can not be null")
     private MovieDto movie;
@@ -29,12 +30,11 @@ public class SessionDto implements EntityDto {
     @NotNull(message = "date can not be null")
     private Date date;
 
-    private PricingDto pricingDto;
+    private PricingDto pricing;
 
     private List<SeatDto> seats;
 
-    private MovieDto movieDto;
-
+    @JsonIgnore
     public long getFreeSeats() {
         return seats.stream().filter(seat -> !seat.isTaken()).count();
     }

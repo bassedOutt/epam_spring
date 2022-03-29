@@ -1,17 +1,17 @@
 package com.epam.spring.homework3.model;
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
-import java.sql.Date;
 import java.util.List;
 
 @Data
-@Builder
 @Entity
 public class Movie {
+
+    public Movie(){}
 
     @Id
     @GeneratedValue
@@ -25,7 +25,6 @@ public class Movie {
 
     @Column(nullable = false)
     private int price;
-    private Date releaseDate;
 
     @Column(unique = true)
     private String uaTitle;
@@ -35,7 +34,7 @@ public class Movie {
     private String enTitle;
     private String enDescription;
 
-    @OneToMany(mappedBy = "movie",orphanRemoval = true)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "movie")
     private List<Session> sessionList;
-
 }

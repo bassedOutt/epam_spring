@@ -15,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 public class UserDto {
 
-    private String id;
+    private Long id;
 
     @NotEmpty
     private String name;

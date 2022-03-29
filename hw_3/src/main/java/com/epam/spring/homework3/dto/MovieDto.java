@@ -16,7 +16,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class MovieDto implements EntityDto {
 
-    private String id;
+    private Long id;
 
     @Min(value = 10, message = "Movie duration can not be less than 10 min")
     private int duration;
@@ -26,8 +26,6 @@ public class MovieDto implements EntityDto {
 
     @Min(value = 1, message = "Price can not be 0 or less")
     private int price;
-
-    private Date releaseDate;
 
     private String uaTitle;
     private String uaDescription;

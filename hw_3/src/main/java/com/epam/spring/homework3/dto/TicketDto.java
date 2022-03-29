@@ -22,7 +22,6 @@ public class TicketDto {
 
     private Long id;
     private double price;
-
-    private List<Seat> seat;
+    private Seat seat;
     private User user;
 }

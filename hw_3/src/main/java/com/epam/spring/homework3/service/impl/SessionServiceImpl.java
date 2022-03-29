@@ -4,6 +4,7 @@ import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.dto.mapper.SessionMapper;
 import com.epam.spring.homework3.exception.EntityCreationException;
 import com.epam.spring.homework3.model.Session;
+import com.epam.spring.homework3.model.Ticket;
 import com.epam.spring.homework3.service.LanguageService;
 import com.epam.spring.homework3.service.repository.SessionRepository;
 import com.epam.spring.homework3.service.SessionService;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -50,8 +52,8 @@ class SessionServiceImpl implements SessionService {
             throw new EntityCreationException("There are already movie session going in that time");
         } else {
             Session session = mapper.sessionDtoToSession(sessionDto);
-            repository.save(session);
-            return sessionDto;
+            Session savedSession = repository.save(session);
+            return mapper.sessionToSessionDto(savedSession);
         }
     }
 
@@ -81,20 +83,6 @@ class SessionServiceImpl implements SessionService {
         return sessions;
     }
 
-//    public List<SessionDto> findAllLocalized(String language) {
-//        log.info("Getting all localized sessions. Language: {}", language);
-//        return repository.findAllLocalized(language)
-//                .stream().map(mapper::sessionToSessionDto)
-//                .collect(Collectors.toList());
-//    }
-
-//    @Override
-//    public List<SessionDto> findSessionsWithTitle(String title) {
-//        log.info("Finding sessions with title: {}", title);
-//        return repository.findSessionWithMovie(title)
-//                .stream().map(mapper::sessionToSessionDto)
-//                .collect(Collectors.toList());
-//    }
 
     public List<SessionDto> findInRange(String filter, List<SessionDto> sessions) {
 
@@ -143,6 +131,20 @@ class SessionServiceImpl implements SessionService {
                         && !(s1.getStartTime().before(s.getEndTime())
                         && s1.getEndTime().after(s.getEndTime()))
                         && s1.getStartTime().compareTo(s.getStartTime()) != 0 && s1.getEndTime().compareTo(s.getEndTime()) != 0);
+    }
+
+    @Override
+    public List<SessionDto> findSessionsWithTitle(String title) {
+        return repository.findAll().stream()
+                .filter(session -> session.getMovie().getEnTitle().equals(title)
+                        || session.getMovie().getUaTitle().equals(title))
+                .map(mapper::sessionToSessionDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public void insertSeats(SessionDto session) {
+        repository.insert_seats(session.getId());
     }
 
 

@@ -1,38 +1,41 @@
 package com.epam.spring.homework3.model;
 
-import lombok.Builder;
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Data
-@Builder
 public class Seat {
+
+    public Seat(){
+
+    }
 
     private static final double VIP_PRICE_COEFFICIENT = 30;
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "seat_number",nullable = false)
     private int seatNumber;
 
     @Column(name = "is_vip")
-    private boolean isVip;
+    private Boolean isVip;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "session_id",nullable = false)
     private Session session;
 
+    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+    private Ticket ticket;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "ticket_id")
-    private Ticket ticket;
 
     public boolean isTaken() {
         return user != null;

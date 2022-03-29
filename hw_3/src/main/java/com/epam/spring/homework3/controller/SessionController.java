@@ -24,7 +24,7 @@ public class SessionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SessionDto> getAllSessions(@RequestParam String language,
+    public List<SessionDto> getAllSessions(
                                            @RequestParam(required = false) String sorter,
                                            @RequestParam(required = false) String range) {
         log.info("getting list of sessions");
@@ -38,18 +38,20 @@ public class SessionController {
         return list;
     }
 
-//    @ResponseStatus(HttpStatus.OK)
-//    @GetMapping(value = "{title}")
-//    public List<SessionDto> getSessionWithMovie(@PathVariable String title) {
-//        log.info("getting all sessions with title: {}", title);
-//        return sessionService.findSessionsWithTitle(title);
-//    }
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping(value = "{title}")
+    public List<SessionDto> getSessionWithMovie(@PathVariable String title) {
+        log.info("getting all sessions with title: {}", title);
+        return sessionService.findSessionsWithTitle(title);
+    }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public SessionDto insertSession(@RequestBody @Valid SessionDto sessionDto) {
         log.info("creating session : {}", sessionDto);
-        return sessionService.insert(sessionDto);
+        SessionDto session = sessionService.insert(sessionDto);
+        sessionService.insertSeats(session);
+        return session;
     }
 
     @ResponseStatus(HttpStatus.OK)

@@ -13,7 +13,7 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class PricingDto implements EntityDto {
 
-    private String id;
+    private Long id;
 
     @NotEmpty(message = "Pricing name can not be null")
     private String name;
