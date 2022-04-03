@@ -1,6 +1,6 @@
 package com.epam.spring.homework3.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,21 +23,11 @@ public class Seat {
     private int seatNumber;
 
     @Column(name = "is_vip")
-    private Boolean isVip;
+    private boolean isVip;
 
-    @JsonBackReference
-    @ManyToOne
-    @JoinColumn(name = "session_id",nullable = false)
-    private Session session;
-
+    @Column(name = "session_id")
+    private Long sessionId;
+    @JsonIgnore
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
     private Ticket ticket;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    public boolean isTaken() {
-        return user != null;
-    }
 }

@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -11,8 +11,10 @@ import java.sql.Time;
 import java.util.List;
 
 @Data
+@ToString(exclude = {"movie"})
 @Entity
 public class Session{
+
 
     public Session(){}
 
@@ -33,13 +35,16 @@ public class Session{
     @JoinColumn(name = "pricing_id")
     private Pricing pricing;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "session",orphanRemoval = true)
+    @OneToMany
+    @JoinColumn(name = "session_id", referencedColumnName = "id")
     private List<Seat> seats;
 
-    @JsonBackReference
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id")
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
 
 }

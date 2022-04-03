@@ -3,7 +3,6 @@ package com.epam.spring.homework3.service.impl;
 import com.epam.spring.homework3.dto.MovieDto;
 import com.epam.spring.homework3.dto.mapper.MovieMapper;
 import com.epam.spring.homework3.model.Movie;
-import com.epam.spring.homework3.service.LanguageService;
 import com.epam.spring.homework3.service.repository.MovieRepository;
 import com.epam.spring.homework3.service.MovieService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -29,52 +30,66 @@ class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List<MovieDto> getAll() {
+    public List<MovieDto> findAll() {
         log.info("getting all movies");
-        return repository.findAll().stream()
+        List<Movie> movies = repository.findAll();
+        log.debug(movies.toString());
+        return movies.stream()
                 .map(mapper::movieToMovieDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public MovieDto getById(Long id) {
+    public MovieDto findById(Long id) {
         log.info("Searching for movie with id: {}", id);
-        return mapper.movieToMovieDto(repository.getById(id));
+        Movie movieDto = repository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return map(movieDto);
     }
 
     @Override
     public MovieDto insert(MovieDto entity) {
         log.info("Inserting movie :{}", entity);
-        MovieDto insertedMovie = mapper.movieToMovieDto(repository.save(mapper.movieDtoToMovie(entity)));
-        log.info("Movie was inserted");
-        return insertedMovie;
+        Movie movie = repository.save(map(entity));
+        return map(movie);
     }
 
     @Override
     public MovieDto update(MovieDto entity) {
         log.info("updating movie: {}", entity);
-        Movie movie = mapper.movieDtoToMovie(entity);
-        repository.save(movie);
-        return entity;
+        Movie movie = repository.save(map(entity));
+        return map(movie);
     }
 
     @Override
-    public void delete(Long id) {
+    public MovieDto deleteById(Long id) {
         log.info("deleting movie with an id: {}", id);
-        repository.deleteById(id);
+        Movie movie = repository.deleteMovieById(id).orElseThrow(EntityNotFoundException::new);
+        return map(movie);
     }
 
     @Override
     public MovieDto findByTitle(String title) {
         log.info("Searching for movie with title:{}", title);
-        String locale = LanguageService.getUserLanguage();
-        MovieDto movieDto = null;
-        if (locale.equals("en")) {
-            movieDto = mapper.movieToMovieDto(repository.findMovieByEnTitle(title));
-        } else if (locale.equals("ua")) {
-            movieDto = mapper.movieToMovieDto(repository.findMovieByUaTitle(title));
+
+        Optional<Movie> movieUa = repository.findMovieByUaTitle(title);
+        Optional<Movie> movieEn = repository.findMovieByEnTitle(title);
+
+        if (movieEn.isPresent()) {
+            return map(movieEn.get());
+        } else if (movieUa.isPresent()) {
+            return map((movieUa.get()));
         }
-        log.info("movie found:{}", movieDto);
-        return movieDto;
+        throw new EntityNotFoundException();
     }
+
+    private Movie map(MovieDto movieDto) {
+        log.info("Mapping [MovieDto] to [Movie]");
+        return mapper.movieDtoToMovie(movieDto);
+    }
+
+    private MovieDto map(Movie movie) {
+        log.info("Mapping [Movie] to [MovieDto]");
+        return mapper.movieToMovieDto(movie);
+    }
+
 }

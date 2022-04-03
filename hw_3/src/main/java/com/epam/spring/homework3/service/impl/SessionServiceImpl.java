@@ -4,8 +4,6 @@ import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.dto.mapper.SessionMapper;
 import com.epam.spring.homework3.exception.EntityCreationException;
 import com.epam.spring.homework3.model.Session;
-import com.epam.spring.homework3.model.Ticket;
-import com.epam.spring.homework3.service.LanguageService;
 import com.epam.spring.homework3.service.repository.SessionRepository;
 import com.epam.spring.homework3.service.SessionService;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +34,8 @@ class SessionServiceImpl implements SessionService {
 
     @Override
     public List<SessionDto> getAll() {
-        return repository.findAll()
+        List<Session> sessions = repository.findAll();
+        return sessions
                 .stream().map(mapper::sessionToSessionDto)
                 .collect(Collectors.toList());
     }
@@ -76,9 +75,9 @@ class SessionServiceImpl implements SessionService {
             case "time": {
                 return sessions.stream().sorted(byTime).collect(Collectors.toList());
             }
-            case "seats": {
-                return sessions.stream().sorted(bySeats.reversed()).collect(Collectors.toList());
-            }
+//            case "seats": {
+//                return sessions.stream().sorted(bySeats.reversed()).collect(Collectors.toList());
+//            }
         }
         return sessions;
     }
@@ -135,11 +134,12 @@ class SessionServiceImpl implements SessionService {
 
     @Override
     public List<SessionDto> findSessionsWithTitle(String title) {
-        return repository.findAll().stream()
-                .filter(session -> session.getMovie().getEnTitle().equals(title)
-                        || session.getMovie().getUaTitle().equals(title))
-                .map(mapper::sessionToSessionDto)
-                .collect(Collectors.toList());
+//        return repository.findAll().stream()
+//                .filter(session -> session.getMovie().getEnTitle().equals(title)
+//                        || session.getMovie().getUaTitle().equals(title))
+//                .map(mapper::sessionToSessionDto)
+//                .collect(Collectors.toList());
+        return null;
     }
 
     @Override
@@ -152,5 +152,5 @@ class SessionServiceImpl implements SessionService {
     private final Comparator<SessionDto> byTime = (SessionDto s1, SessionDto s2) ->
             s1.getDate().compareTo(s2.getDate()) == 0 ? s1.getStartTime().compareTo(s2.getStartTime()) : s1.getDate().compareTo(s2.getDate());
 
-    private final Comparator<SessionDto> bySeats = Comparator.comparing(SessionDto::getFreeSeats);
+//    private final Comparator<SessionDto> bySeats = Comparator.comparing(SessionDto::getFreeSeats);
 }

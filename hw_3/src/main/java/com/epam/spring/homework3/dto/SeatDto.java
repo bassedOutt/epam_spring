@@ -1,10 +1,13 @@
 package com.epam.spring.homework3.dto;
 
-import com.epam.spring.homework3.model.Session;
-import com.epam.spring.homework3.model.Ticket;
-import com.epam.spring.homework3.model.User;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
-public class SeatDto {
+@Data
+@Builder
+@AllArgsConstructor
+public class SeatDto implements EntityDto {
 
     private static final double VIP_PRICE_COEFFICIENT = 30;
 
@@ -14,13 +17,5 @@ public class SeatDto {
 
     private boolean isVip;
 
-    private Session session;
-
-    private User user;
-
-    private Ticket ticket;
-
-    public boolean isTaken() {
-        return user != null;
-    }
+    private TicketDto ticket;
 }

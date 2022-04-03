@@ -1,6 +1,7 @@
 package com.epam.spring.homework3.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Data
 @Entity
+@ToString(exclude = {"sessionList"})
 public class Movie {
 
     public Movie(){}
@@ -34,7 +36,9 @@ public class Movie {
     private String enTitle;
     private String enDescription;
 
-    @JsonManagedReference
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id")
     @OneToMany(mappedBy = "movie")
     private List<Session> sessionList;
 }

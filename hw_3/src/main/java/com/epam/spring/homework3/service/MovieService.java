@@ -5,15 +5,15 @@ import com.epam.spring.homework3.dto.MovieDto;
 import java.util.List;
 
 public interface MovieService {
-    List<MovieDto> getAll();
+    List<MovieDto> findAll();
 
-    MovieDto getById(Long id);
+    MovieDto findById(Long id);
 
     MovieDto insert(MovieDto entity);
 
     MovieDto update(MovieDto entity);
 
-    void delete(Long id);
+    MovieDto deleteById(Long id);
 
     MovieDto findByTitle(String title);
 

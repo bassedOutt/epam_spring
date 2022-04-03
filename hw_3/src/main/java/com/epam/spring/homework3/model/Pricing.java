@@ -11,9 +11,7 @@ import javax.persistence.Id;
 @Entity
 public class Pricing {
 
-    public Pricing(){
-
-    }
+    public Pricing(){}
 
     @Id
     @GeneratedValue
