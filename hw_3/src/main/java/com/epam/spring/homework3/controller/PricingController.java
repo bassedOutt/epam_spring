@@ -27,7 +27,7 @@ public class PricingController {
     @GetMapping
     public List<PricingDto> getAllPricings(){
         log.info("getting list of pricings");
-        return service.getAll();
+        return service.findAll();
     }
 
     @ResponseStatus(HttpStatus.OK)

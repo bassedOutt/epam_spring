@@ -24,7 +24,7 @@ class PricingServiceImpl implements PricingService {
         this.repository = repository;
     }
 
-    public List<PricingDto> getAll() {
+    public List<PricingDto> findAll() {
         log.info("getting list of pricings");
         return repository.findAll().stream().map(mapper::pricingToPricingDto).collect(Collectors.toList());
     }

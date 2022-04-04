@@ -28,7 +28,7 @@ public class SessionController {
                                            @RequestParam(required = false) String sorter,
                                            @RequestParam(required = false) String range) {
         log.info("getting list of sessions");
-        List<SessionDto> list = sessionService.getAll();
+        List<SessionDto> list = sessionService.findAll();
         if (sorter != null) {
             list = sessionService.sortSessions(sorter, list);
         }
@@ -49,9 +49,7 @@ public class SessionController {
     @PostMapping
     public SessionDto insertSession(@RequestBody @Valid SessionDto sessionDto) {
         log.info("creating session : {}", sessionDto);
-        SessionDto session = sessionService.insert(sessionDto);
-        sessionService.insertSeats(session);
-        return session;
+        return sessionService.insert(sessionDto);
     }
 
     @ResponseStatus(HttpStatus.OK)

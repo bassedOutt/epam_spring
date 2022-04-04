@@ -2,6 +2,7 @@ package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.MovieDto;
 import com.epam.spring.homework3.dto.mapper.MovieMapper;
+import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.service.repository.MovieRepository;
 import com.epam.spring.homework3.service.MovieService;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+public
 class MovieServiceImpl implements MovieService {
 
     private MovieRepository repository;
@@ -56,6 +57,10 @@ class MovieServiceImpl implements MovieService {
     @Override
     public MovieDto update(MovieDto entity) {
         log.info("updating movie: {}", entity);
+
+        if(!repository.findMovieByEnTitle(entity.getEnTitle()).isPresent())
+            throw new EntityNotFoundException("Movie is not present in the database");
+
         Movie movie = repository.save(map(entity));
         return map(movie);
     }
@@ -79,7 +84,7 @@ class MovieServiceImpl implements MovieService {
         } else if (movieUa.isPresent()) {
             return map((movieUa.get()));
         }
-        throw new EntityNotFoundException();
+        throw new EntityNotFoundException("Movie not found");
     }
 
     private Movie map(MovieDto movieDto) {

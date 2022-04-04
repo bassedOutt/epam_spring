@@ -5,6 +5,7 @@ import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.model.Session;
 import org.mapstruct.Mapper;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 
@@ -15,6 +16,7 @@ public interface MovieMapper {
 
     SessionMapper SESSION_MAPPER = Mappers.getMapper(SessionMapper.class);
 
+    @Named("movieToMovieDto")
     MovieDto movieToMovieDto(Movie movie);
 
     Movie movieDtoToMovie(MovieDto movieDto);

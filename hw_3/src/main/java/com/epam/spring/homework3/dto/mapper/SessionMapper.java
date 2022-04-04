@@ -9,6 +9,7 @@ import com.epam.spring.homework3.model.Pricing;
 import com.epam.spring.homework3.model.Seat;
 import com.epam.spring.homework3.model.Session;
 import org.mapstruct.Mapper;
+import org.mapstruct.Named;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -17,6 +18,8 @@ import java.util.List;
 public interface SessionMapper {
 
     SessionMapper INSTANCE = Mappers.getMapper(SessionMapper.class);
+
+    MovieMapper MOVIE_MAPPER_INSTANCE = Mappers.getMapper(MovieMapper.class);
 
     Session sessionDtoToSession(SessionDto sessionDto);
 
@@ -34,7 +37,7 @@ public interface SessionMapper {
         SessionDto.SessionDtoBuilder sessionDto = SessionDto.builder();
 
         sessionDto.id( session.getId() );
-        sessionDto.movie( movieToMovieDto( session.getMovie() ) );
+        sessionDto.movie(MOVIE_MAPPER_INSTANCE.movieToMovieDto(session.getMovie()) );
         sessionDto.startTime( session.getStartTime() );
         sessionDto.endTime( session.getEndTime() );
         sessionDto.date( session.getDate() );
@@ -44,7 +47,6 @@ public interface SessionMapper {
         return sessionDto.build();
     }
 
-    MovieDto movieToMovieDto(Movie movie);
     PricingDto pricingToPricingDto(Pricing pricing);
     List<SeatDto> seatListToSeatDtoList(List<Seat> seats);
 }

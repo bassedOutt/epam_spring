@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.controller;
 
 
-import com.epam.spring.homework3.exception.EntityCreationException;
+import com.epam.spring.homework3.exception.EntityInsertionException;
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.exception.ApiError;
 import lombok.extern.slf4j.Slf4j;
@@ -29,9 +29,9 @@ public class ExceptionHandlingController {
         return new ApiError(ex.getMessage(), ENTITY_NOT_FOUND_ERROR_TYPE, LocalDateTime.now());
     }
 
-    @ExceptionHandler(EntityCreationException.class)
+    @ExceptionHandler(EntityInsertionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleEntityCreationException(EntityCreationException ex, HandlerMethod hm) {
+    public ApiError handleEntityCreationException(EntityInsertionException ex, HandlerMethod hm) {
         log.error("handleEntityCreationException : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
         return new ApiError(ex.getMessage(), ENTITY_CREATION_FAILED_ERROR_TYPE, LocalDateTime.now());
     }

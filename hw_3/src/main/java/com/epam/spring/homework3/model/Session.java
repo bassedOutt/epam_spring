@@ -15,7 +15,6 @@ import java.util.List;
 @Entity
 public class Session{
 
-
     public Session(){}
 
     @Id
