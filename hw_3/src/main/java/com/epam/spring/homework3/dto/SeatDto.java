@@ -18,4 +18,8 @@ public class SeatDto implements EntityDto {
     private boolean isVip;
 
     private TicketDto ticket;
+
+    public boolean isTaken(){
+        return ticket!=null;
+    }
 }

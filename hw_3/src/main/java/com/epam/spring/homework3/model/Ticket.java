@@ -26,4 +26,7 @@ public class Ticket {
     @JoinColumn(name = "user_id",nullable = false)
     private User user;
 
+    @Column(name = "session_id")
+    private Long sessionId;
+
 }

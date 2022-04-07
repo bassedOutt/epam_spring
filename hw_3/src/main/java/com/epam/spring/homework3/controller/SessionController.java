@@ -1,6 +1,8 @@
 package com.epam.spring.homework3.controller;
 
 import com.epam.spring.homework3.dto.SessionDto;
+import com.epam.spring.homework3.dto.TicketDto;
+import com.epam.spring.homework3.dto.UserDto;
 import com.epam.spring.homework3.service.SessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,18 +17,19 @@ import java.util.List;
 @Slf4j
 @RequestMapping("api/v1/session")
 public class SessionController {
+
     private SessionService sessionService;
 
     @Autowired
-    public void setUserService(SessionService sessionService) {
+    public void setSessionService(SessionService sessionService) {
         this.sessionService = sessionService;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SessionDto> getAllSessions(
-                                           @RequestParam(required = false) String sorter,
+    public List<SessionDto> getAllSessions(@RequestParam(required = false) String sorter,
                                            @RequestParam(required = false) String range) {
+
         log.info("getting list of sessions");
         List<SessionDto> list = sessionService.findAll();
         if (sorter != null) {
@@ -65,6 +68,12 @@ public class SessionController {
         log.info("deleting session with an id: {}", id);
         sessionService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/buy/{seatId}")
+    public TicketDto buyTicket(@RequestBody @Valid SessionDto sessionDto, @PathVariable Long seatId, @RequestBody UserDto userDto){
+        return null;
     }
 
 

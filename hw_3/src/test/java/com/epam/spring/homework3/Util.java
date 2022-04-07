@@ -1,18 +1,21 @@
 package com.epam.spring.homework3;
 
 import com.epam.spring.homework3.dto.MovieDto;
+import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.dto.mapper.MovieMapper;
+import com.epam.spring.homework3.dto.mapper.SessionMapper;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.model.Session;
 import org.mapstruct.factory.Mappers;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 
 public class Util {
 
     private static final MovieMapper MOVIE_MAPPER = Mappers.getMapper(MovieMapper.class);
+
+    private static final SessionMapper SESSION_MAPPER = Mappers.getMapper(SessionMapper.class);
+
 
     public static Movie createMovie(){
         Movie movie = new Movie();
@@ -32,11 +35,13 @@ public class Util {
 
     public static Session createSession(){
         Session session = new Session();
-        Date date = new Date(Calendar.getInstance().getTime().getTime());
-        session.setDate(date);
-        session.setEndTime(Time.valueOf("12:00:00"));
-        session.setStartTime(Time.valueOf("9:00:00"));
+        session.setStartTime(LocalDateTime.now());
         return session;
+    }
+
+
+    public static SessionDto createSessionDto(){
+        return SESSION_MAPPER.sessionToSessionDto(createSession());
     }
 
 

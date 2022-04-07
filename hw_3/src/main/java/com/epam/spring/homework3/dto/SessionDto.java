@@ -1,15 +1,13 @@
 package com.epam.spring.homework3.dto;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -17,20 +15,19 @@ import java.util.List;
 @AllArgsConstructor
 public class SessionDto implements EntityDto {
 
+    public SessionDto() {
+
+    }
+
     private Long id;
 
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @NotNull(message = "movie can not be null")
     private MovieDto movie;
 
+    @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
     @NotNull(message = "start time can not be null")
-    private Time startTime;
-
-    @NotNull(message = "end time can not be null")
-    private Time endTime;
-
-    @NotNull(message = "date can not be null")
-    private Date date;
+    private LocalDateTime startTime;
 
     private PricingDto pricing;
 

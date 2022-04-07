@@ -6,8 +6,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
-import java.sql.Date;
-import java.sql.Time;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -15,20 +14,16 @@ import java.util.List;
 @Entity
 public class Session{
 
-    public Session(){}
+    public Session(){
+
+    }
 
     @Id
     @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    private Time startTime;
-
-    @Column(nullable = false)
-    private Time endTime;
-
-    @Column(nullable = false)
-    private Date date;
+    private LocalDateTime startTime;
 
     @ManyToOne
     @JoinColumn(name = "pricing_id")
@@ -38,12 +33,17 @@ public class Session{
     @JoinColumn(name = "session_id", referencedColumnName = "id")
     private List<Seat> seats;
 
+    @OneToMany
+    @JoinColumn(name = "session_id", referencedColumnName = "id")
+    private List<Seat> tickets;
+
     @JsonIdentityInfo(
             generator = ObjectIdGenerators.PropertyGenerator.class,
             property = "id")
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
+
 
 
 }

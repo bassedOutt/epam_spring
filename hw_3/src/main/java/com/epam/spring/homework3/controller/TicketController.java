@@ -30,20 +30,6 @@ public class TicketController {
         return service.findAll();
     }
 
-    @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
-    public TicketDto createTicket(@RequestBody @Valid TicketDto ticketDto){
-        log.info("creating ticket : {}",ticketDto);
-        return service.insert(ticketDto);
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping
-    public TicketDto updateTicket(@RequestBody @Valid TicketDto ticketDto){
-        log.info("updating ticket with id : {}",ticketDto.getId());
-        return service.update(ticketDto);
-    }
-
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "{id}")
     public ResponseEntity<Void> deleteTicket(@PathVariable Long id){

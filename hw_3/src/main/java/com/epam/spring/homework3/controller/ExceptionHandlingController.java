@@ -1,9 +1,9 @@
 package com.epam.spring.homework3.controller;
 
 
-import com.epam.spring.homework3.exception.EntityInsertionException;
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.exception.ApiError;
+import com.epam.spring.homework3.exception.SeatIsAlreadyTakenException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,10 +29,10 @@ public class ExceptionHandlingController {
         return new ApiError(ex.getMessage(), ENTITY_NOT_FOUND_ERROR_TYPE, LocalDateTime.now());
     }
 
-    @ExceptionHandler(EntityInsertionException.class)
+    @ExceptionHandler(SeatIsAlreadyTakenException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ApiError handleEntityCreationException(EntityInsertionException ex, HandlerMethod hm) {
-        log.error("handleEntityCreationException : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
+    public ApiError handleEntityCreationException(SeatIsAlreadyTakenException ex, HandlerMethod hm) {
+        log.error("handleSeatAlreadyTakenException : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
         return new ApiError(ex.getMessage(), ENTITY_CREATION_FAILED_ERROR_TYPE, LocalDateTime.now());
     }
 

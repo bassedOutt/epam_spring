@@ -20,7 +20,7 @@ public class User {
     @Column(unique = true)
     private String email;
     private String password;
-    private boolean isAdmin;
+    private boolean isAdmin = false;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Ticket> tickets;

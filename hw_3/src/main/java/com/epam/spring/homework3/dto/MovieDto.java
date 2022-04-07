@@ -1,18 +1,19 @@
 package com.epam.spring.homework3.dto;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.*;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
 @ToString(exclude = {"sessionList"})
 @AllArgsConstructor
 public class MovieDto implements EntityDto {
+
+    public MovieDto(){}
 
     private Long id;
 
@@ -34,13 +35,4 @@ public class MovieDto implements EntityDto {
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private List<SessionDto> sessionList;
 
-    public String getTitle(String locale) {
-        if (locale.equals("en")) {
-            return enTitle;
-        } else if (locale.equals("ua")) {
-            return uaTitle;
-        }
-        return null;
-
-    }
 }

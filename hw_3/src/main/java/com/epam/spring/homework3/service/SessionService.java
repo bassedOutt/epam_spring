@@ -1,6 +1,8 @@
 package com.epam.spring.homework3.service;
 
 import com.epam.spring.homework3.dto.SessionDto;
+import com.epam.spring.homework3.dto.TicketDto;
+import com.epam.spring.homework3.dto.UserDto;
 
 import java.util.List;
 
@@ -12,8 +14,45 @@ public interface SessionService extends CrudService<SessionDto> {
     //returns list of sessions in some range(today, tomorrow, this week)
     List<SessionDto> findInRange(String range, List<SessionDto> sessions);
 
-    //ensures that the newly created session's show time does not interfere with other sessions
-
     List<SessionDto> findSessionsWithTitle(String title);
+
+    TicketDto buyTicket(SessionDto sessionDto, UserDto userDto,Long seatId);
+
+    enum SESSION_SORTERS {
+        BY_NAME("name"),
+        BY_TIME("time"),
+        BY_SEATS("seats");
+
+        private final String sorter;
+
+
+        SESSION_SORTERS(final String sorter) {
+            this.sorter = sorter;
+        }
+
+        @Override
+        public String toString() {
+            return sorter;
+        }
+    }
+
+    enum SESSION_RANGE {
+        BY_NAME("today"),
+        BY_TIME("tomorrow"),
+        BY_SEATS("week");
+
+        private final String sorter;
+
+
+        SESSION_RANGE(final String sorter) {
+            this.sorter = sorter;
+        }
+
+        @Override
+        public String toString() {
+            return sorter;
+        }
+    }
+
 
 }

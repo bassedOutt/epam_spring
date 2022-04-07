@@ -39,8 +39,6 @@ public interface SessionMapper {
         sessionDto.id( session.getId() );
         sessionDto.movie(MOVIE_MAPPER_INSTANCE.movieToMovieDto(session.getMovie()) );
         sessionDto.startTime( session.getStartTime() );
-        sessionDto.endTime( session.getEndTime() );
-        sessionDto.date( session.getDate() );
         sessionDto.pricing( pricingToPricingDto( session.getPricing() ) );
         sessionDto.seats( seatListToSeatDtoList( session.getSeats() ) );
 

@@ -19,5 +19,5 @@ public class PricingDto implements EntityDto {
     private String name;
 
     @Min(value = 1,message = "Price can't be 0 or less")
-    private double price;
+    private Long price;
 }

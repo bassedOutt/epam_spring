@@ -10,7 +10,7 @@ import lombok.Data;
 public class TicketDto {
 
     private Long id;
-    private Double price;
+    private Long price;
     private SeatDto seat;
     private UserDto user;
 }

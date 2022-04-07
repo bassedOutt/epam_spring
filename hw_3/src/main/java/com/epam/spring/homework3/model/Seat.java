@@ -13,7 +13,7 @@ public class Seat {
 
     }
 
-    private static final double VIP_PRICE_COEFFICIENT = 30;
+    public static final Long VIP_PRICE = 50L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +23,11 @@ public class Seat {
     private int seatNumber;
 
     @Column(name = "is_vip")
-    private boolean isVip;
+    private boolean isVip = false;
 
     @Column(name = "session_id")
     private Long sessionId;
+
     @JsonIgnore
     @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
     private Ticket ticket;
