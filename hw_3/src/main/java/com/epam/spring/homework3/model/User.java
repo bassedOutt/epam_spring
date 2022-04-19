@@ -22,6 +22,7 @@ public class User {
     private String password;
     private boolean isAdmin = false;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL,orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
+    @JoinColumn(name = "user_id")
     private List<Ticket> tickets;
 }

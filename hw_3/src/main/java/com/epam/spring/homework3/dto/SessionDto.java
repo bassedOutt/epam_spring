@@ -10,6 +10,8 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -21,7 +23,7 @@ public class SessionDto implements EntityDto {
 
     private Long id;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @JsonInclude(NON_NULL)
     @NotNull(message = "movie can not be null")
     private MovieDto movie;
 
@@ -31,9 +33,14 @@ public class SessionDto implements EntityDto {
 
     private PricingDto pricing;
 
+    @JsonInclude(NON_NULL)
     private List<SeatDto> seats;
 
-    public Long getFreeSeats(){
-        return seats.stream().filter(seatDto -> seatDto.getTicket()==null).count();
+    @JsonInclude(NON_NULL)
+    private List<TicketDto> tickets;
+
+    @JsonInclude(NON_NULL)
+    public Long getFreeSeats() {
+        return seats == null ? null : seats.stream().filter(seatDto -> seatDto.getTicket() == null).count();
     }
 }

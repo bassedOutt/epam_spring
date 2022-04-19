@@ -1,8 +1,12 @@
 package com.epam.spring.homework3.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+
+import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
+
 
 @Data
 @Builder
@@ -15,8 +19,12 @@ public class SeatDto implements EntityDto {
 
     private int seatNumber;
 
-    private boolean isVip;
+    private Boolean isVip;
 
+    @JsonInclude(NON_NULL)
+    private SessionDto session;
+
+    @JsonInclude(NON_NULL)
     private TicketDto ticket;
 
     public boolean isTaken(){

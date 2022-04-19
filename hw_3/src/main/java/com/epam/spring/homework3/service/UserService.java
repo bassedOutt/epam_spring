@@ -5,16 +5,6 @@ import com.epam.spring.homework3.model.User;
 
 import java.util.List;
 
-public interface UserService {
-    List<UserDto> findAll();
-
-    UserDto getById(Long id);
-
-    UserDto insert(UserDto entity);
-
-    UserDto update(UserDto entity);
-
-    void delete(Long id);
-
+public interface UserService extends CrudService<UserDto>{
     UserDto findByEmail(String email);
 }

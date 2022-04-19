@@ -1,15 +1,19 @@
 package com.epam.spring.homework3.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Data
-public class Seat {
+@ToString(exclude = "session")
 
-    public Seat(){
+public class Seat implements Serializable {
+
+    private static final long serialVersionUID = 2758698409013395067L;
+
+    public Seat() {
 
     }
 
@@ -19,16 +23,17 @@ public class Seat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "seat_number",nullable = false)
+    @Column(name = "seat_number", nullable = false)
     private int seatNumber;
 
-    @Column(name = "is_vip")
-    private boolean isVip = false;
+    @Column(name = "is_vip", columnDefinition = "boolean not null default 0")
+    private Boolean isVip;
 
-    @Column(name = "session_id")
-    private Long sessionId;
+    @ManyToOne
+    @JoinColumn(name = "session_id")
+    private Session session;
 
-    @JsonIgnore
-    @OneToOne(mappedBy = "seat", cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "ticket_id", referencedColumnName = "id")
     private Ticket ticket;
 }

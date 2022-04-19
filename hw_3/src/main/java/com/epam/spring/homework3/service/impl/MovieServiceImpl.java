@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.MovieDto;
-import com.epam.spring.homework3.dto.mapper.MovieMapper;
+import com.epam.spring.homework3.dto.mapper.EntityMapper;
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.service.repository.MovieRepository;
@@ -23,7 +23,7 @@ public
 class MovieServiceImpl implements MovieService {
 
     private MovieRepository repository;
-    private final MovieMapper mapper = MovieMapper.INSTANCE;
+    private final EntityMapper mapper = EntityMapper.INSTANCE;
 
     @Autowired
     public void setRepository(MovieRepository repository) {
@@ -36,7 +36,7 @@ class MovieServiceImpl implements MovieService {
         List<Movie> movies = repository.findAll();
         log.debug(movies.toString());
         return movies.stream()
-                .map(mapper::movieToMovieDto)
+                .map(mapper::toMovieDto)
                 .collect(Collectors.toList());
     }
 
@@ -89,12 +89,12 @@ class MovieServiceImpl implements MovieService {
 
     private Movie map(MovieDto movieDto) {
         log.info("Mapping [MovieDto] to [Movie]");
-        return mapper.movieDtoToMovie(movieDto);
+        return mapper.fromMovieDto(movieDto);
     }
 
     private MovieDto map(Movie movie) {
         log.info("Mapping [Movie] to [MovieDto]");
-        return mapper.movieToMovieDto(movie);
+        return mapper.toMovieDto(movie);
     }
 
 }

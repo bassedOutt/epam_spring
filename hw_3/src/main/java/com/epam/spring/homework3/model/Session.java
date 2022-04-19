@@ -26,16 +26,15 @@ public class Session{
     private LocalDateTime startTime;
 
     @ManyToOne
-    @JoinColumn(name = "pricing_id")
+    @JoinColumn(name = "pricing_id",columnDefinition = "bigint default 1")
     private Pricing pricing;
 
-    @OneToMany
-    @JoinColumn(name = "session_id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "session")
     private List<Seat> seats;
 
     @OneToMany
     @JoinColumn(name = "session_id", referencedColumnName = "id")
-    private List<Seat> tickets;
+    private List<Ticket> tickets;
 
     @JsonIdentityInfo(
             generator = ObjectIdGenerators.PropertyGenerator.class,
@@ -43,7 +42,5 @@ public class Session{
     @ManyToOne
     @JoinColumn(name = "movie_id")
     private Movie movie;
-
-
 
 }

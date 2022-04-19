@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 
-
 @Data
 @Entity
 public class Ticket {
@@ -13,20 +12,14 @@ public class Ticket {
     public Ticket(){}
 
     @Id
+    @Column(name = "id")
+    @GeneratedValue
     private Long id;
 
     @Column(nullable = false)
-    private double price;
+    private Long price;
 
-    @OneToOne
-    @JoinColumn(name = "seat_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "ticket")
     private Seat seat;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id",nullable = false)
-    private User user;
-
-    @Column(name = "session_id")
-    private Long sessionId;
 
 }

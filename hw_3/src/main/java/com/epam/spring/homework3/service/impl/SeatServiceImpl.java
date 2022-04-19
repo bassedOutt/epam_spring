@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.SeatDto;
-import com.epam.spring.homework3.dto.mapper.SeatMapper;
+import com.epam.spring.homework3.dto.mapper.EntityMapper;
 import com.epam.spring.homework3.model.Seat;
 import com.epam.spring.homework3.service.SeatService;
 import com.epam.spring.homework3.service.repository.SeatRepository;
@@ -20,7 +20,7 @@ public class SeatServiceImpl implements SeatService {
 
     private SeatRepository repository;
 
-    private final SeatMapper mapper = SeatMapper.INSTANCE;
+    private final EntityMapper mapper = EntityMapper.INSTANCE;
 
     @Autowired
     public void setRepository(SeatRepository repository) {
@@ -31,7 +31,7 @@ public class SeatServiceImpl implements SeatService {
     public List<SeatDto> findAll() {
         log.info("getting list of seats");
         return repository.findAll().stream()
-                .map(mapper::seatToSeatDto)
+                .map(mapper::toSeatDto)
                 .collect(Collectors.toList());
     }
 
@@ -39,7 +39,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     public SeatDto insert(SeatDto entity) {
         log.info("inserting seat: {}", entity);
-        Seat seat = mapper.seatDtoToSeat(entity);
+        Seat seat = mapper.fromSeatDto(entity);
         repository.save(seat);
         return entity;
     }
@@ -47,7 +47,7 @@ public class SeatServiceImpl implements SeatService {
     @Override
     public SeatDto update(SeatDto entity) {
         log.info("updating seat with id: {}", entity.getId());
-        Seat seat = mapper.seatDtoToSeat(entity);
+        Seat seat = mapper.fromSeatDto(entity);
         repository.save(seat);
         return entity;
     }
@@ -62,7 +62,7 @@ public class SeatServiceImpl implements SeatService {
     public SeatDto findById(Long id) {
         Optional<Seat> seat = repository.findById(id);
         if (seat.isPresent()) {
-            return mapper.seatToSeatDto(seat.get());
+            return mapper.toSeatDto(seat.get());
         }
         throw new EntityNotFoundException("No seat with id " + id);
     }

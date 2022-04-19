@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.PricingDto;
-import com.epam.spring.homework3.dto.mapper.PricingMapper;
+import com.epam.spring.homework3.dto.mapper.EntityMapper;
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Pricing;
 import com.epam.spring.homework3.service.PricingService;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 class PricingServiceImpl implements PricingService {
 
     private PricingRepository repository;
-    private final PricingMapper mapper = PricingMapper.INSTANCE;
+    private final EntityMapper mapper = EntityMapper.INSTANCE.INSTANCE;
 
     @Autowired
     public void setRepository(PricingRepository repository) {
@@ -26,24 +26,26 @@ class PricingServiceImpl implements PricingService {
 
     public List<PricingDto> findAll() {
         log.info("getting list of pricings");
-        return repository.findAll().stream().map(mapper::pricingToPricingDto).collect(Collectors.toList());
+        return repository.findAll().stream()
+                .map(mapper::toPricingDto)
+                .collect(Collectors.toList());
     }
 
     public PricingDto getById(Long id) {
         log.info("getting pricing with id {} ", id);
-        return mapper.pricingToPricingDto(repository.getById(id));
+        return mapper.toPricingDto(repository.getById(id));
     }
 
     public PricingDto insert(PricingDto entity) {
         log.info("inserting pricing: {}", entity);
-        Pricing pricing = mapper.pricingDtoToPricing(entity);
+        Pricing pricing = mapper.fromPricingDto(entity);
         repository.save(pricing);
         return entity;
     }
 
     public PricingDto update(PricingDto entity) {
         log.info("updating pricing: {}", entity);
-        Pricing pricing = mapper.pricingDtoToPricing(entity);
+        Pricing pricing = mapper.fromPricingDto(entity);
         repository.save(pricing);
         return entity;
     }
@@ -59,7 +61,7 @@ class PricingServiceImpl implements PricingService {
         return repository.findAll().stream()
                 .filter(pricing -> pricing.getName().equals(name))
                 .findFirst()
-                .map(mapper::pricingToPricingDto)
+                .map(mapper::toPricingDto)
                 .orElseThrow(() -> new EntityNotFoundException("No pricing with name " + name + "were found"));
     }
 }

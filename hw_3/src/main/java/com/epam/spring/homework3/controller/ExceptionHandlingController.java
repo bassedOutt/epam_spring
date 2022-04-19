@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.HandlerMethod;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,6 +51,7 @@ public class ExceptionHandlingController {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ApiError handleInternalServerError(Exception ex, HandlerMethod hm) {
         log.error("handleInternalServerError : {}. method: {}", ex.getMessage(), hm.getMethod().getName());
+        ex.printStackTrace();
         return new ApiError(ex.getMessage(), FATAL_ERROR_TYPE, LocalDateTime.now());
     }
 

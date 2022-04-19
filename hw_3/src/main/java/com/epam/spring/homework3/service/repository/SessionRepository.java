@@ -1,5 +1,6 @@
 package com.epam.spring.homework3.service.repository;
 
+import com.epam.spring.homework3.model.Seat;
 import com.epam.spring.homework3.model.Session;
 import com.epam.spring.homework3.model.Ticket;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,8 +1,6 @@
 package com.epam.spring.homework3.controller;
 
-import com.epam.spring.homework3.dto.SessionDto;
-import com.epam.spring.homework3.dto.TicketDto;
-import com.epam.spring.homework3.dto.UserDto;
+import com.epam.spring.homework3.dto.*;
 import com.epam.spring.homework3.service.SessionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +49,9 @@ public class SessionController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public SessionDto insertSession(@RequestBody @Valid SessionDto sessionDto) {
+        if (sessionDto.getPricing() == null) {
+            sessionDto.setPricing(PricingDto.builder().id(1L).build());
+        }
         log.info("creating session : {}", sessionDto);
         return sessionService.insert(sessionDto);
     }
@@ -71,10 +72,10 @@ public class SessionController {
     }
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping("/buy/{seatId}")
-    public TicketDto buyTicket(@RequestBody @Valid SessionDto sessionDto, @PathVariable Long seatId, @RequestBody UserDto userDto){
-        return null;
-    }
+    @PostMapping("/buy_ticket")
+    public TicketDto buyTicket(@RequestParam Long userId, @RequestParam Long seatId, @RequestParam Long sessionId) {
 
+        return sessionService.buyTicket(sessionId, userId, seatId);
+    }
 
 }

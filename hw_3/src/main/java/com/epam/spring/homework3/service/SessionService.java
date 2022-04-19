@@ -2,11 +2,12 @@ package com.epam.spring.homework3.service;
 
 import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.dto.TicketDto;
-import com.epam.spring.homework3.dto.UserDto;
 
 import java.util.List;
 
 public interface SessionService extends CrudService<SessionDto> {
+
+    SessionDto findById(Long id);
 
     //sorts list of sessions(by name, time or number of available seats)
     List<SessionDto> sortSessions(String sorter, List<SessionDto> sessions);
@@ -16,7 +17,7 @@ public interface SessionService extends CrudService<SessionDto> {
 
     List<SessionDto> findSessionsWithTitle(String title);
 
-    TicketDto buyTicket(SessionDto sessionDto, UserDto userDto,Long seatId);
+    TicketDto buyTicket(Long sessionId, Long userId,Long seatId);
 
     enum SESSION_SORTERS {
         BY_NAME("name"),

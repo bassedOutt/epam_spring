@@ -4,17 +4,18 @@ import com.epam.spring.homework3.dto.SeatDto;
 import com.epam.spring.homework3.dto.SessionDto;
 import com.epam.spring.homework3.dto.TicketDto;
 import com.epam.spring.homework3.dto.UserDto;
-import com.epam.spring.homework3.dto.mapper.SessionMapper;
+import com.epam.spring.homework3.dto.mapper.EntityMapper;
 import com.epam.spring.homework3.exception.SeatIsAlreadyTakenException;
 import com.epam.spring.homework3.model.Seat;
 import com.epam.spring.homework3.model.Session;
 import com.epam.spring.homework3.service.SeatService;
 import com.epam.spring.homework3.service.TicketService;
+import com.epam.spring.homework3.service.UserService;
 import com.epam.spring.homework3.service.repository.SessionRepository;
 import com.epam.spring.homework3.service.SessionService;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -28,38 +29,32 @@ import java.util.stream.Collectors;
 @Slf4j
 public class SessionServiceImpl implements SessionService {
 
+    @NonNull
     private SessionRepository repository;
-    private final SessionMapper mapper = SessionMapper.INSTANCE;
 
-    @Autowired
-    public void setRepository(SessionRepository repository) {
-        this.repository = repository;
-    }
-
+    @NonNull
     private TicketService ticketService;
+
+    @NonNull
     private SeatService seatService;
 
-    @Autowired
-    public void setTicketService(TicketService ticketService) {
-        this.ticketService = ticketService;
-    }
+    @NonNull
+    private UserService userService;
 
-    @Autowired
-    public void setSeatService(SeatService seatService) {
-        this.seatService = seatService;
-    }
+    private final EntityMapper mapper = EntityMapper.INSTANCE;
+
 
     @Override
     public List<SessionDto> findAll() {
         List<Session> sessions = repository.findAll();
         return sessions
-                .stream().map(mapper::sessionToSessionDto)
+                .stream().map(mapper::toSessionDto)
                 .collect(Collectors.toList());
     }
 
-    public SessionDto getById(Long id) {
+    public SessionDto findById(Long id) {
         log.info("getting session with id {} ", id);
-        return mapper.sessionToSessionDto(repository.getById(id));
+        return mapper.toSessionDto(repository.getById(id));
     }
 
     //todo: seats are null
@@ -68,12 +63,13 @@ public class SessionServiceImpl implements SessionService {
         log.info("inserting session: {}", sessionDto);
         Session session = repository.save(map(sessionDto));
         repository.insert_seats(session.getId());
-        return map(repository.getById(session.getId()));
+
+        return map(session);
     }
 
     public SessionDto update(SessionDto sessionDto) {
         log.info("updating session: {}", sessionDto);
-        Session session = mapper.sessionDtoToSession(sessionDto);
+        Session session = mapper.fromSessionDto(sessionDto);
         repository.save(session);
         return sessionDto;
     }
@@ -136,27 +132,32 @@ public class SessionServiceImpl implements SessionService {
         return repository.findAll().stream()
                 .filter(session -> session.getMovie().getEnTitle().equals(title)
                         || session.getMovie().getUaTitle().equals(title))
-                .map(mapper::sessionToSessionDto)
+                .map(mapper::toSessionDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public TicketDto buyTicket(SessionDto sessionDto, UserDto userDto, Long seatId) {
+    public TicketDto buyTicket(Long sessionId, Long userId, Long seatId) {
+
         SeatDto seatDto = seatService.findById(seatId);
+
+        SessionDto sessionDto = findById(sessionId);
+
+        UserDto userDto = userService.findById(userId);
+
         if (seatDto.isTaken()) {
             throw new SeatIsAlreadyTakenException();
         }
 
         TicketDto ticketDto = TicketDto.builder()
                 .seat(seatDto)
-                .user(userDto)
                 .price(calculatePrice(sessionDto, seatDto))
                 .build();
 
-        seatDto.setTicket(ticketDto);
+        userDto.addTicket(ticketDto);
 
         TicketDto ticket = ticketService.insert(ticketDto);
-        seatService.update(seatDto);
+        userService.update(userDto);
 
         return ticket;
     }
@@ -166,17 +167,16 @@ public class SessionServiceImpl implements SessionService {
     private final Comparator<SessionDto> bySeats = Comparator.comparing(SessionDto::getFreeSeats);
 
     private SessionDto map(Session session) {
-        return mapper.sessionToSessionDto(session);
+        return mapper.toSessionDto(session);
     }
 
     private Session map(SessionDto sessionDto) {
-        return mapper.sessionDtoToSession(sessionDto);
+        return mapper.fromSessionDto(sessionDto);
     }
 
     private Long calculatePrice(SessionDto sessionDto, SeatDto seatDto) {
-        return seatDto.isVip() ? sessionDto.getMovie().getPrice() + sessionDto.getPricing().getPrice() + Seat.VIP_PRICE :
+        return seatDto.getIsVip() ? sessionDto.getMovie().getPrice() + sessionDto.getPricing().getPrice() + Seat.VIP_PRICE :
                 sessionDto.getMovie().getPrice() + sessionDto.getPricing().getPrice();
     }
-
 
 }

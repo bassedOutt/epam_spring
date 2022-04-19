@@ -1,7 +1,7 @@
 package com.epam.spring.homework3.service.impl;
 
 import com.epam.spring.homework3.dto.TicketDto;
-import com.epam.spring.homework3.dto.mapper.TicketMapper;
+import com.epam.spring.homework3.dto.mapper.EntityMapper;
 import com.epam.spring.homework3.model.Ticket;
 import com.epam.spring.homework3.service.TicketService;
 import com.epam.spring.homework3.service.repository.TicketRepository;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 class TicketServiceImpl implements TicketService {
 
     private TicketRepository repository;
-    private final TicketMapper mapper = TicketMapper.INSTANCE;
+    private final EntityMapper mapper = EntityMapper.INSTANCE;
 
     @Autowired
     public void setRepository(TicketRepository repository) {
@@ -28,20 +28,14 @@ class TicketServiceImpl implements TicketService {
     public List<TicketDto> findAll() {
         log.info("getting list of tickets");
         return repository.findAll().stream()
-                .map(mapper::ticketToTicketDto)
+                .map(mapper::toTicketDto)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public TicketDto getById(Long id) {
-        log.info("getting ticket with id {} ", id);
-        return mapper.ticketToTicketDto(repository.getById(id));
     }
 
     @Override
     public TicketDto insert(TicketDto entity) {
         log.info("inserting ticket: {}", entity);
-        Ticket ticket = mapper.ticketDtoToTicket(entity);
+        Ticket ticket = mapper.fromTicketDto(entity);
         repository.save(ticket);
         return entity;
     }
@@ -49,7 +43,7 @@ class TicketServiceImpl implements TicketService {
     @Override
     public TicketDto update(TicketDto entity) {
         log.info("updating ticket with id: {}", entity.getId());
-        Ticket ticket = mapper.ticketDtoToTicket(entity);
+        Ticket ticket = mapper.fromTicketDto(entity);
         repository.save(ticket);
         return entity;
     }
