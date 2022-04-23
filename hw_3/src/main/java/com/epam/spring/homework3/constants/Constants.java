@@ -23,4 +23,20 @@ public class Constants {
             return sorter;
         }
     }
+
+    public enum ROLES{
+        ROLE_USER("ROLE_USER"),
+        ROLE_MANAGER("ROLE_MANAGER");
+
+        private final String role;
+
+        ROLES(final String role) {
+            this.role = role;
+        }
+
+        @Override
+        public String toString() {
+            return role;
+        }
+    }
 }

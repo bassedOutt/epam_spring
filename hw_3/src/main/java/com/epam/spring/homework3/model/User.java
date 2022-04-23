@@ -3,6 +3,7 @@ package com.epam.spring.homework3.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static javax.persistence.FetchType.EAGER;
@@ -28,5 +29,9 @@ public class User {
     private List<Ticket> tickets;
 
     @ManyToMany(fetch = EAGER)
-    private List<Role> roles;
+    private List<Role> roles = new ArrayList<>();
+
+    public void addRole(Role role) {
+        roles.add(role);
+    }
 }

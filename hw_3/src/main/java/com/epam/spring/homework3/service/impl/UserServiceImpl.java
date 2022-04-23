@@ -9,17 +9,16 @@ import com.epam.spring.homework3.model.User;
 import com.epam.spring.homework3.service.repository.RoleRepository;
 import com.epam.spring.homework3.service.repository.UserRepository;
 import com.epam.spring.homework3.service.UserService;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -27,11 +26,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 class UserServiceImpl implements UserService, UserDetailsService {
 
-    @NonNull
-    private UserRepository repository;
-    @NonNull
-    private RoleRepository roleRepository;
+    private final UserRepository repository;
+    private final RoleRepository roleRepository;
     private final EntityMapper mapper = EntityMapper.INSTANCE;
+    private final PasswordEncoder passwordEncoder;
 
     public List<UserDto> findAll() {
         log.info("fetching all users");
@@ -45,18 +43,20 @@ class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void addRoleToUser(String email, String rolename) {
+    public UserDto addRoleToUser(String email, String rolename) {
         log.info("adding role {} to user {}", rolename, email);
-        Optional<User> user = repository.findByEmail(email);
-        Optional<Role> role = roleRepository.findByName(rolename);
-        user.orElseThrow(UserNotFoundException::new)
-                .getRoles().add(role.orElseThrow(RoleNotFoundException::new));
+        User user = repository.findByEmail(email).orElseThrow(UserNotFoundException::new);
+        Role role = roleRepository.findByName(rolename).orElseThrow(RoleNotFoundException::new);
+        user.addRole(role);
+        repository.save(user);
+        return mapper.toUserDto(user);
     }
 
     @Override
     public UserDto insert(UserDto entity) {
         log.info("saving user {} to database", entity.getEmail());
         User user = mapper.fromUserDto(entity);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return mapper.toUserDto(repository.save(user));
     }
 
@@ -84,7 +84,7 @@ class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        User user = repository.findByEmail(s).orElseThrow(()->
+        User user = repository.findByEmail(s).orElseThrow(() ->
                 new UsernameNotFoundException(String.format("User with email %s not found", s)));
 
         List<SimpleGrantedAuthority> authorities = user.getRoles().stream()

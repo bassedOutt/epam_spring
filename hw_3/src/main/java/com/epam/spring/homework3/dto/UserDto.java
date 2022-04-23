@@ -6,10 +6,10 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
@@ -17,7 +17,7 @@ import static com.fasterxml.jackson.annotation.JsonInclude.Include.NON_NULL;
 @Data
 @Builder
 @AllArgsConstructor
-public class UserDto implements EntityDto{
+public class UserDto implements EntityDto {
 
     private Long id;
 
@@ -41,6 +41,6 @@ public class UserDto implements EntityDto{
         tickets.add(ticketDto);
     }
 
-
     List<Role> roles;
+
 }
