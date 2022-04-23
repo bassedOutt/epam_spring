@@ -19,7 +19,8 @@ public class Ticket {
     @Column(nullable = false)
     private Long price;
 
-    @OneToOne(mappedBy = "ticket")
+    @OneToOne
+    @JoinColumn(name = "seat_id", unique = true, referencedColumnName = "id")
     private Seat seat;
 
 }

@@ -141,7 +141,7 @@ public class SessionServiceImpl implements SessionService {
 
         SeatDto seatDto = seatService.findById(seatId);
 
-        SessionDto sessionDto = findById(sessionId);
+        SessionDto sessionDto = this.findById(sessionId);
 
         UserDto userDto = userService.findById(userId);
 
@@ -154,10 +154,12 @@ public class SessionServiceImpl implements SessionService {
                 .price(calculatePrice(sessionDto, seatDto))
                 .build();
 
-        userDto.addTicket(ticketDto);
-
         TicketDto ticket = ticketService.insert(ticketDto);
+
+        userDto.addTicket(ticket);
+        sessionDto.addTicket(ticket);
         userService.update(userDto);
+        this.update(sessionDto);
 
         return ticket;
     }

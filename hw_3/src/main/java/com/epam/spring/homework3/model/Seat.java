@@ -33,7 +33,6 @@ public class Seat implements Serializable {
     @JoinColumn(name = "session_id")
     private Session session;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "ticket_id", referencedColumnName = "id")
+    @OneToOne(mappedBy = "seat")
     private Ticket ticket;
 }

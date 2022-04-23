@@ -37,7 +37,7 @@ class TicketServiceImpl implements TicketService {
         log.info("inserting ticket: {}", entity);
         Ticket ticket = mapper.fromTicketDto(entity);
         repository.save(ticket);
-        return entity;
+        return mapper.toTicketDto(ticket);
     }
 
     @Override

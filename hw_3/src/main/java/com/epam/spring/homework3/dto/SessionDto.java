@@ -43,4 +43,8 @@ public class SessionDto implements EntityDto {
     public Long getFreeSeats() {
         return seats == null ? null : seats.stream().filter(seatDto -> seatDto.getTicket() == null).count();
     }
+
+    public void addTicket(TicketDto ticketDto){
+        tickets.add(ticketDto);
+    }
 }
