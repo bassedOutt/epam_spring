@@ -18,14 +18,14 @@ public interface EntityMapper {
 
     EntityMapper INSTANCE = Mappers.getMapper(EntityMapper.class);
 
-    PricingDto toPricingDto(Pricing pricing);
+    PricingDto pricingToPricingDto(Pricing pricing);
 
     Pricing fromPricingDto(PricingDto pricing);
 
     @Named("toTicketDto")
     @Mappings({
             @Mapping(target = "seat", qualifiedByName = "toSeatDtoWithoutTicket")})
-    TicketDto toTicketDto(Ticket ticket);
+    TicketDto ticketToTicketDto(Ticket ticket);
 
     @Named("toTicketDtoWithoutSeat")
     @Mappings({
@@ -44,19 +44,13 @@ public interface EntityMapper {
 
     @Named("toSeatDto")
     @Mappings({
-            @Mapping(target = "ticket", qualifiedByName = "toTicketDtoWithoutSeat"),
-            @Mapping(target = "session", qualifiedByName = "toSessionDtoWithoutSeats")})
-    SeatDto toSeatDto(Seat seat);
+            @Mapping(target = "ticket", qualifiedByName = "toTicketDtoWithoutSeat")})
+    SeatDto seatToSeatDto(Seat seat);
 
     @Named(value = "toSeatDtoWithoutTicket")
     @Mappings({
             @Mapping(target = "ticket", ignore = true)})
     SeatDto toSeatDtoWithoutTicket(Seat seat);
-
-    @Named(value = "toSeatDtoWithoutSession")
-    @Mappings({
-            @Mapping(target = "session", ignore = true)})
-    SeatDto toSeatDtoWithoutSession(Seat seat);
 
     @Named(value = "toSeatWithoutTicket")
     @Mappings({
@@ -70,51 +64,46 @@ public interface EntityMapper {
 
     @Named(value = "toSessionDtoListWithoutMovie")
     default List<SessionDto> toSessionDtoListWithoutMovie(List<Session> list) {
-        return list.stream()
+        return list == null || list.isEmpty() ? null :
+                list.stream()
                 .map(this::toSessionDtoWithoutMovie)
                 .collect(Collectors.toList());
     }
 
-    @Named(value = "toSeatDtoListWithoutSession")
-    default List<SeatDto> toSeatDtoListWithoutSession(List<Seat> list) {
-
-        return list == null || list.isEmpty() ? null :
-                list.stream()
-                        .map(this::toSeatDtoWithoutSession)
-                        .collect(Collectors.toList());
+    @Named(value = "toSeatDtoListWithoutTicket")
+    default List<SeatDto> toSeatDtoListWithoutTicket(List<Seat> list) {
+        return list.stream()
+                .map(this::toSeatDtoWithoutTicket)
+                .collect(Collectors.toList());
     }
 
     default List<SessionDto> sessionListToSessionDtoList(List<Session> list) {
         return list == null || list.isEmpty() ? null :
                 list.stream()
-                        .map(this::toSessionDto)
+                        .map(this::sessionToSessionDto)
                         .collect(Collectors.toList());
     }
 
     @Named(value = "toSessionDtoWithoutMovie")
     @Mappings({
-            @Mapping(target = "movie", ignore = true)})
+            @Mapping(target = "movie", ignore = true),
+            @Mapping(target = "seats", qualifiedByName = "toSeatDtoListWithoutTicket"),
+            @Mapping(target = "tickets", qualifiedByName = "toTicketDtoListWithoutSeat")})
     SessionDto toSessionDtoWithoutMovie(Session session);
-
-    @Named(value = "toSessionDtoWithoutSeats")
-    @Mappings({
-            @Mapping(target = "seats", ignore = true),
-            @Mapping(target = "movie", qualifiedByName = "toMovieDtoWithoutSessions")})
-    SessionDto toSessionDtoWithoutSeats(Session session);
 
     Session fromSessionDto(SessionDto sessionDto);
 
     @Named("toSessionDto")
     @Mappings({
             @Mapping(target = "movie", qualifiedByName = "toMovieDtoWithoutSessions"),
-            @Mapping(target = "seats", qualifiedByName = "toSeatDtoListWithoutSession"),
-            @Mapping(target = "tickets",qualifiedByName = "toTicketDtoListWithoutSeat")})
-    SessionDto toSessionDto(Session session);
+            @Mapping(target = "seats", qualifiedByName = "toSeatDtoListWithoutTicket"),
+            @Mapping(target = "tickets", qualifiedByName = "toTicketDtoListWithoutSeat")})
+    SessionDto sessionToSessionDto(Session session);
 
     @Named("toMovieDto")
     @Mappings({
             @Mapping(target = "sessionList", qualifiedByName = "toSessionDtoListWithoutMovie")})
-    MovieDto toMovieDto(Movie movie);
+    MovieDto movieToMovieDto(Movie movie);
 
     @Named(value = "toMovieDtoWithoutSessions")
     @Mappings({
@@ -128,7 +117,7 @@ public interface EntityMapper {
     User fromUserDto(UserDto user);
 
     @Named("toTicketDtoListWithoutSeat")
-    default List<TicketDto> toTicketDtoListWithoutSeat(List<Ticket> list){
+    default List<TicketDto> toTicketDtoListWithoutSeat(List<Ticket> list) {
         return list.stream().map(this::toTicketDtoWithoutSeat)
                 .collect(Collectors.toList());
     }

@@ -24,19 +24,12 @@ public class Constants {
         }
     }
 
-    public enum ROLES{
-        ROLE_USER("ROLE_USER"),
-        ROLE_MANAGER("ROLE_MANAGER");
+    public static String USER = "USER";
+    public static String ADMIN = "ADMIN";
 
-        private final String role;
+    public static final String LOGIN_PATH = "/api/v1/login";
+    public static final String TOKEN_REFRESH_PATH = "/api/v1/user/token/refresh";
+    public static final String ROLE_CLAIM = "roles";
+    public static final String API_URL = "api/v1";
 
-        ROLES(final String role) {
-            this.role = role;
-        }
-
-        @Override
-        public String toString() {
-            return role;
-        }
-    }
 }

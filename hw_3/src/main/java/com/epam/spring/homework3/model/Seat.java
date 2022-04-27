@@ -29,10 +29,6 @@ public class Seat implements Serializable {
     @Column(name = "is_vip", columnDefinition = "boolean not null default 0")
     private Boolean isVip;
 
-    @ManyToOne
-    @JoinColumn(name = "session_id")
-    private Session session;
-
     @OneToOne(mappedBy = "seat")
     private Ticket ticket;
 }

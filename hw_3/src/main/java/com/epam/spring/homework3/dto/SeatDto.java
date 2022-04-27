@@ -22,9 +22,6 @@ public class SeatDto implements EntityDto {
     private Boolean isVip;
 
     @JsonInclude(NON_NULL)
-    private SessionDto session;
-
-    @JsonInclude(NON_NULL)
     private TicketDto ticket;
 
     public boolean isTaken(){

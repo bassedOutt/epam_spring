@@ -1,6 +1,6 @@
 package com.epam.spring.homework3.repository;
 
-import com.epam.spring.homework3.Util;
+import com.epam.spring.homework3.TestUtil;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.service.repository.MovieRepository;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ public class MovieRepositoryTest {
     @Test
     @Transactional
     public void ShouldInsertUser(){
-        Movie movie = Util.createMovie();
+        Movie movie = TestUtil.createMovie();
 
         Movie savedMovie = repository.save(movie);
 

@@ -1,14 +1,18 @@
 package com.epam.spring.homework3.controller;
 
-import com.epam.spring.homework3.constants.Constants;
 import com.epam.spring.homework3.dto.UserDto;
+import com.epam.spring.homework3.exception.TokenNotValidException;
 import com.epam.spring.homework3.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.List;
+import java.util.Map;
 
-import static com.epam.spring.homework3.constants.Constants.ROLES.*;
+import static com.epam.spring.homework3.constants.Constants.USER;
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
@@ -21,19 +25,33 @@ public class UserController {
 
     @GetMapping
     @ResponseStatus(OK)
-    public UserDto findAll(){
-        return null;
+    public List<UserDto> findAll() {
+        return userService.findAll();
     }
 
     @PostMapping
     @ResponseStatus(CREATED)
-    public UserDto createUser(@RequestBody @Valid UserDto user){
+    public UserDto createUser(@RequestBody @Valid UserDto user) {
         userService.insert(user);
-        return userService.addRoleToUser(user.getEmail(), ROLE_USER.toString());
+        return userService.addRoleToUser(user.getEmail(), USER);
     }
 
     @PostMapping("/add_role_to_user")
-    public UserDto addRoleToUser(@RequestBody String email, String role){
+    public UserDto addRoleToUser(@RequestBody String email, String role) {
         return userService.addRoleToUser(email, role);
+    }
+
+    @GetMapping("/token/refresh")
+    @ResponseStatus(OK)
+    public Map<String, String> refreshToken(HttpServletRequest request) {
+
+        String authorizationHeader = request.getHeader(AUTHORIZATION);
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            String refreshToken = authorizationHeader.substring("Bearer ".length());
+            String requestUrl = request.getRequestURL().toString();
+            return userService.refreshAccessToken(refreshToken, requestUrl);
+        } else {
+            throw new TokenNotValidException("Refresh token is not present or not valid");
+        }
     }
 }

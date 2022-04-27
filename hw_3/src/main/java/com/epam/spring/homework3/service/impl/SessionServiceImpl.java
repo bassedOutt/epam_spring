@@ -16,6 +16,7 @@ import com.epam.spring.homework3.service.SessionService;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -43,21 +44,21 @@ public class SessionServiceImpl implements SessionService {
 
     private final EntityMapper mapper = EntityMapper.INSTANCE;
 
-
     @Override
     public List<SessionDto> findAll() {
         List<Session> sessions = repository.findAll();
         return sessions
-                .stream().map(mapper::toSessionDto)
+                .stream().map(mapper::sessionToSessionDto)
                 .collect(Collectors.toList());
     }
 
     public SessionDto findById(Long id) {
         log.info("getting session with id {} ", id);
-        return mapper.toSessionDto(repository.getById(id));
+        return mapper.sessionToSessionDto(repository.getById(id));
     }
 
     //todo: seats are null
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public SessionDto insert(SessionDto sessionDto) {
 
         log.info("inserting session: {}", sessionDto);
@@ -67,6 +68,7 @@ public class SessionServiceImpl implements SessionService {
         return map(session);
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public SessionDto update(SessionDto sessionDto) {
         log.info("updating session: {}", sessionDto);
         Session session = mapper.fromSessionDto(sessionDto);
@@ -132,11 +134,12 @@ public class SessionServiceImpl implements SessionService {
         return repository.findAll().stream()
                 .filter(session -> session.getMovie().getEnTitle().equals(title)
                         || session.getMovie().getUaTitle().equals(title))
-                .map(mapper::toSessionDto)
+                .map(mapper::sessionToSessionDto)
                 .collect(Collectors.toList());
     }
 
     @Override
+    @PreAuthorize(value = "hasRole('USER')")
     public TicketDto buyTicket(Long sessionId, Long userId, Long seatId) {
 
         SeatDto seatDto = seatService.findById(seatId);
@@ -169,7 +172,7 @@ public class SessionServiceImpl implements SessionService {
     private final Comparator<SessionDto> bySeats = Comparator.comparing(SessionDto::getFreeSeats);
 
     private SessionDto map(Session session) {
-        return mapper.toSessionDto(session);
+        return mapper.sessionToSessionDto(session);
     }
 
     private Session map(SessionDto sessionDto) {

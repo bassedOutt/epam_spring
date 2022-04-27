@@ -1,6 +1,6 @@
 package com.epam.spring.homework3.service;
 
-import com.epam.spring.homework3.Util;
+import com.epam.spring.homework3.TestUtil;
 import com.epam.spring.homework3.dto.MovieDto;
 import com.epam.spring.homework3.exception.EntityNotFoundException;
 import com.epam.spring.homework3.model.Movie;
@@ -36,7 +36,7 @@ public class MovieServiceTest {
     @Test
     public void shouldFindMovieByEnTitle(){
 
-        Movie movie  = Util.createMovie();
+        Movie movie  = TestUtil.createMovie();
 
         when(movieRepository.findMovieByEnTitle(TEST_MOVIE_NAME_EN)).thenReturn(Optional.of(movie));
 
@@ -51,7 +51,7 @@ public class MovieServiceTest {
     @Test
     public void shouldFindMovieByUaTitle(){
 
-        Movie movie  = Util.createMovie();
+        Movie movie  = TestUtil.createMovie();
 
         when(movieRepository.findMovieByUaTitle(TEST_MOVIE_NAME_UA)).thenReturn(Optional.of(movie));
 
@@ -66,9 +66,9 @@ public class MovieServiceTest {
     @Test
     public void shouldCreateMovie(){
 
-        MovieDto movieDto = Util.createMovieDto();
+        MovieDto movieDto = TestUtil.createMovieDto();
 
-        Movie testMovie = Util.createMovie();
+        Movie testMovie = TestUtil.createMovie();
 
         when(movieRepository.save(Mockito.any(Movie.class))).thenReturn(testMovie);
 
@@ -80,7 +80,7 @@ public class MovieServiceTest {
     @Test
     public void shouldThrowEntityNotFoundException(){
 
-        MovieDto movieDto = Util.createMovieDto();
+        MovieDto movieDto = TestUtil.createMovieDto();
 
         Exception exception = assertThrows(EntityNotFoundException.class,()->
                 movieService.update(movieDto));

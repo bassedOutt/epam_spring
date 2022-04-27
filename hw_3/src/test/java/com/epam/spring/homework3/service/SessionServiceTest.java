@@ -1,9 +1,8 @@
 package com.epam.spring.homework3.service;
 
-import com.epam.spring.homework3.Util;
+import com.epam.spring.homework3.TestUtil;
 import com.epam.spring.homework3.dto.MovieDto;
 import com.epam.spring.homework3.dto.SessionDto;
-import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.model.Session;
 import com.epam.spring.homework3.service.impl.SessionServiceImpl;
 import com.epam.spring.homework3.service.repository.SessionRepository;
@@ -13,14 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.epam.spring.homework3.service.SessionService.SESSION_SORTERS.*;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -29,7 +24,6 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-
 public class SessionServiceTest {
 
     @Spy
@@ -41,9 +35,9 @@ public class SessionServiceTest {
     @Test
     public void shouldInsertSession(){
 
-        SessionDto sessionDto = Util.createSessionDto();
+        SessionDto sessionDto = TestUtil.createSessionDto();
 
-        Session testSession = Util.createSession();
+        Session testSession = TestUtil.createSession();
 
         testSession.setId(1L);
 

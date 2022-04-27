@@ -7,6 +7,7 @@ import com.epam.spring.homework3.service.SeatService;
 import com.epam.spring.homework3.service.repository.SeatRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -28,15 +29,17 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public List<SeatDto> findAll() {
         log.info("getting list of seats");
         return repository.findAll().stream()
-                .map(mapper::toSeatDto)
+                .map(mapper::seatToSeatDto)
                 .collect(Collectors.toList());
     }
 
 
     @Override
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public SeatDto insert(SeatDto entity) {
         log.info("inserting seat: {}", entity);
         Seat seat = mapper.fromSeatDto(entity);
@@ -45,6 +48,7 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public SeatDto update(SeatDto entity) {
         log.info("updating seat with id: {}", entity.getId());
         Seat seat = mapper.fromSeatDto(entity);
@@ -53,16 +57,18 @@ public class SeatServiceImpl implements SeatService {
     }
 
     @Override
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public void delete(Long id) {
         log.info("deleting seat with id: {}", id);
         repository.deleteById(id);
     }
 
     @Override
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public SeatDto findById(Long id) {
         Optional<Seat> seat = repository.findById(id);
         if (seat.isPresent()) {
-            return mapper.toSeatDto(seat.get());
+            return mapper.seatToSeatDto(seat.get());
         }
         throw new EntityNotFoundException("No seat with id " + id);
     }

@@ -9,6 +9,7 @@ import com.epam.spring.homework3.service.MovieService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -36,7 +37,7 @@ class MovieServiceImpl implements MovieService {
         List<Movie> movies = repository.findAll();
         log.debug(movies.toString());
         return movies.stream()
-                .map(mapper::toMovieDto)
+                .map(mapper::movieToMovieDto)
                 .collect(Collectors.toList());
     }
 
@@ -48,12 +49,14 @@ class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public MovieDto insert(MovieDto entity) {
         log.info("Inserting movie :{}", entity);
         Movie movie = repository.save(map(entity));
         return map(movie);
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     @Override
     public MovieDto update(MovieDto entity) {
         log.info("updating movie: {}", entity);
@@ -66,6 +69,7 @@ class MovieServiceImpl implements MovieService {
     }
 
     @Override
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public MovieDto deleteById(Long id) {
         log.info("deleting movie with an id: {}", id);
         Movie movie = repository.deleteMovieById(id).orElseThrow(EntityNotFoundException::new);
@@ -94,7 +98,7 @@ class MovieServiceImpl implements MovieService {
 
     private MovieDto map(Movie movie) {
         log.info("Mapping [Movie] to [MovieDto]");
-        return mapper.toMovieDto(movie);
+        return mapper.movieToMovieDto(movie);
     }
 
 }

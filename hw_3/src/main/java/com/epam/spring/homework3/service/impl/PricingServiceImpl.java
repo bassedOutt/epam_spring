@@ -8,6 +8,7 @@ import com.epam.spring.homework3.service.PricingService;
 import com.epam.spring.homework3.service.repository.PricingRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -27,15 +28,16 @@ class PricingServiceImpl implements PricingService {
     public List<PricingDto> findAll() {
         log.info("getting list of pricings");
         return repository.findAll().stream()
-                .map(mapper::toPricingDto)
+                .map(mapper::pricingToPricingDto)
                 .collect(Collectors.toList());
     }
 
     public PricingDto getById(Long id) {
         log.info("getting pricing with id {} ", id);
-        return mapper.toPricingDto(repository.getById(id));
+        return mapper.pricingToPricingDto(repository.getById(id));
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public PricingDto insert(PricingDto entity) {
         log.info("inserting pricing: {}", entity);
         Pricing pricing = mapper.fromPricingDto(entity);
@@ -43,6 +45,7 @@ class PricingServiceImpl implements PricingService {
         return entity;
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public PricingDto update(PricingDto entity) {
         log.info("updating pricing: {}", entity);
         Pricing pricing = mapper.fromPricingDto(entity);
@@ -50,6 +53,7 @@ class PricingServiceImpl implements PricingService {
         return entity;
     }
 
+    @PreAuthorize(value = "hasRole('ADMIN')")
     public void delete(Long id) {
         log.info("deleting user with an id: {}", id);
         repository.deleteById(id);
@@ -61,7 +65,7 @@ class PricingServiceImpl implements PricingService {
         return repository.findAll().stream()
                 .filter(pricing -> pricing.getName().equals(name))
                 .findFirst()
-                .map(mapper::toPricingDto)
+                .map(mapper::pricingToPricingDto)
                 .orElseThrow(() -> new EntityNotFoundException("No pricing with name " + name + "were found"));
     }
 }

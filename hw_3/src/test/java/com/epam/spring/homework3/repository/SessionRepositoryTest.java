@@ -1,6 +1,6 @@
 package com.epam.spring.homework3.repository;
 
-import com.epam.spring.homework3.Util;
+import com.epam.spring.homework3.TestUtil;
 import com.epam.spring.homework3.model.Movie;
 import com.epam.spring.homework3.model.Session;
 import com.epam.spring.homework3.service.repository.MovieRepository;
@@ -40,11 +40,11 @@ public class SessionRepositoryTest {
     @Transactional
     public void shouldInsertSession(){
 
-        Movie movie = Util.createMovie();
+        Movie movie = TestUtil.createMovie();
 
         Movie insertedMovie = movieRepository.save(movie);
 
-        Session session = Util.createSession();
+        Session session = TestUtil.createSession();
 
         session.setMovie(insertedMovie);
 
@@ -60,11 +60,11 @@ public class SessionRepositoryTest {
     //don't know what's happening there, so i guess i'll just leave it as it is
     public void shouldFindInsertedSession(){
 
-        Movie movie = Util.createMovie();
+        Movie movie = TestUtil.createMovie();
 
         movieRepository.save(movie);
 
-        Session session = Util.createSession();
+        Session session = TestUtil.createSession();
 
         session.setMovie(movie);
 

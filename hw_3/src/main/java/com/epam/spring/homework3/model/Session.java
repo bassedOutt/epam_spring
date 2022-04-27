@@ -29,7 +29,8 @@ public class Session{
     @JoinColumn(name = "pricing_id",columnDefinition = "bigint default 1")
     private Pricing pricing;
 
-    @OneToMany(mappedBy = "session")
+    @OneToMany
+    @JoinColumn(name = "session_id", referencedColumnName = "id")
     private List<Seat> seats;
 
     @OneToMany

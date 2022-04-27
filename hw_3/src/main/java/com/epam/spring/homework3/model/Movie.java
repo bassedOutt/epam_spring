@@ -13,8 +13,6 @@ import java.util.List;
 @ToString(exclude = {"sessionList"})
 public class Movie {
 
-    public Movie(){}
-
     @Id
     @GeneratedValue
     private Long id;

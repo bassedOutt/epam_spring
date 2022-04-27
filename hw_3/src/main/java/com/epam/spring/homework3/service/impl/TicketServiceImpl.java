@@ -28,7 +28,7 @@ class TicketServiceImpl implements TicketService {
     public List<TicketDto> findAll() {
         log.info("getting list of tickets");
         return repository.findAll().stream()
-                .map(mapper::toTicketDto)
+                .map(mapper::ticketToTicketDto)
                 .collect(Collectors.toList());
     }
 
@@ -37,7 +37,7 @@ class TicketServiceImpl implements TicketService {
         log.info("inserting ticket: {}", entity);
         Ticket ticket = mapper.fromTicketDto(entity);
         repository.save(ticket);
-        return mapper.toTicketDto(ticket);
+        return mapper.ticketToTicketDto(ticket);
     }
 
     @Override
