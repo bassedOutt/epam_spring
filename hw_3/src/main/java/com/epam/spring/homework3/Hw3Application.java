@@ -1,4 +1,4 @@
-package com.example.hw_3;
+package com.epam.spring.homework3;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
