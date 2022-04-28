@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -46,14 +47,14 @@ public class SessionController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public SessionDto insertSession(@RequestBody SessionDto sessionDto) {
+    public SessionDto insertSession(@RequestBody @Valid SessionDto sessionDto) {
         log.info("creating session : {}", sessionDto);
         return sessionService.insert(sessionDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public SessionDto updateSession(@RequestBody SessionDto sessionDto) {
+    public SessionDto updateSession(@RequestBody @Valid SessionDto sessionDto) {
         log.info("updating session : {}", sessionDto);
         return sessionService.update(sessionDto);
     }

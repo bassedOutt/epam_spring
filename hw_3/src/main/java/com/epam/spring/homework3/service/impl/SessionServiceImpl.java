@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.sql.Date;
 import java.time.LocalDate;
 import java.util.Calendar;
@@ -47,7 +46,7 @@ class SessionServiceImpl implements SessionService {
     public SessionDto insert(SessionDto sessionDto) {
         log.info("inserting session: {}", sessionDto);
         if (!noTimeOverlap(sessionDto)) {
-            throw new EntityCreationException("There are already movie sessoin going in that time");
+            throw new EntityCreationException("There are already movie session going in that time");
         } else {
             Session session = mapper.sessionDtoToSession(sessionDto);
             repository.insert(session);

@@ -25,7 +25,6 @@ abstract class CrudRepositoryImpl<T extends Entity> implements CrudRepository<T>
                 .orElseThrow(() -> new EntityNotFoundException("Can't find entity"));
     }
 
-    //todo ensure uniqueness of each element
     @Override
     public T insert(T entity) {
         entity.setId(UUID.randomUUID().toString());

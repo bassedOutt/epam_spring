@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -31,14 +32,14 @@ public class SeatController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public SeatDto createSeat(@RequestBody SeatDto seatDto){
+    public SeatDto createSeat(@RequestBody @Valid SeatDto seatDto){
         log.info("creating seat : {}",seatDto);
         return service.insert(seatDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public SeatDto updateSeat(@RequestBody SeatDto seatDto){
+    public SeatDto updateSeat(@RequestBody @Valid SeatDto seatDto){
         log.info("updating seat with id : {}",seatDto.getId());
         return service.update(seatDto);
     }

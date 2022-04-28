@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -37,14 +39,14 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserDto insertUser(@RequestBody UserDto userDto){
+    public UserDto insertUser(@RequestBody @Valid UserDto userDto){
         log.info("creating user : {}",userDto);
         return userService.insert(userDto);
     }
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping
-    public UserDto updateUser(@RequestBody UserDto userDto){
+    public UserDto updateUser(@RequestBody @Valid UserDto userDto){
         log.info("updating user : {}",userDto);
         return userService.update(userDto);
     }
